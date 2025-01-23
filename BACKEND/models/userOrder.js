@@ -10,7 +10,7 @@ const orderSchema = new Schema(
       type: Number,
       required: true,
     },
-    buildingNumber: {
+    buildingName: {
       type: String,
       required: true,
     },
