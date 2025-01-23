@@ -120,4 +120,26 @@ const getAllCompletedOrdersAndTotalNumber = async (req, res) => {
   }
 };
 
-module.exports = {submitOrder, getAllOrdersAndTotalNumber, getAllPendingOrdersAndTotalNumber,getAllCompletedOrdersAndTotalNumber };
+const deleteOrderBybagNumber = async (req,res) => {
+const {bagNumber}=req.params
+  try{
+    const deleteOrder = await Order.findOneAndDelete({bagNumber})
+  
+  if(!deleteOrder){
+    res.status(404).json({message:"Order not found"})
+  }
+  res.status(200).json({
+    message: "Order deleted successfully",
+    order:deleteOrder
+  })
+}
+catch(error){
+  res.status(500).json({
+    message:"Failed to delete Order",
+    error:error.message
+  })
+}
+};
+
+
+module.exports = {submitOrder, getAllOrdersAndTotalNumber, getAllPendingOrdersAndTotalNumber,getAllCompletedOrdersAndTotalNumber,deleteOrderBybagNumber };
