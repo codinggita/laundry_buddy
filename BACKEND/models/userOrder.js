@@ -35,7 +35,7 @@ const orderSchema = new Schema(
     status: {
       type: String,
       enum: ["Pending", "In Progress", "Completed", "Delivered"], // Optional status field
-      default: "Pending",
+      default: "Completed",
     },
   },
   {
