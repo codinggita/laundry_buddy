@@ -53,43 +53,71 @@ const submitOrder = async (req, res) => {
 
 
 
-// Get all orderes
+// Get all orderes with number of  orders
 
-const getAllOrders = async (req, res) => {
+const getAllOrdersAndTotalNumber = async (req, res) => {
   try {
     // Fetch all orders from the database
     const orders = await Order.find({});
+    
+    // Count the total number of orders
+    const totalOrders = orders.length;
 
-    // Respond with the fetched data
-    res.status(200).json(orders);
+    // Respond with the fetched data and the total number of orders
+    res.status(200).json({
+      totalOrders,
+      orders
+    });
   } catch (error) {
     // Respond with error if the fetch fails
     res.status(500).json({
-      message: "Failed to fetch orders",
-      error: error.message, // Send the error message to the client
-    });
-  }
-};
-
-
-
-const getTotalNumberOfOrders = async (req, res) => {
-  try {
-    // Count the total number of orders in the collection
-    const totalOrders = await Order.countDocuments({});
-
-    // Respond with the total number of orders
-    res.status(200).json({ totalOrders });
-  } catch (error) {
-    // Respond with error if the count fails
-    res.status(500).json({
-      message: 'Failed to count orders',
+      message: 'Failed to fetch orders and count total',
       error: error.message,  // Send the error message to the client
     });
   }
 };
 
+const getAllPendingOrdersAndTotalNumber = async (req, res) => {
+  try {
+    // Fetch orders with status "pending"
+    const pendingOrders = await Order.find({ status: 'Pending' });
 
+    // Count the total number of pending orders
+    const totalPendingOrders = pendingOrders.length;
 
+    // Respond with the fetched data and total number of pending orders
+    res.status(200).json({
+      totalPendingOrders,
+      pendingOrders
+    });
+  } catch (error) {
+    // Respond with error if the fetch fails
+    res.status(500).json({
+      message: 'Failed to fetch pending orders',
+      error: error.message,  // Send the error message to the client
+    });
+  }
+};
+const getAllCompletedOrdersAndTotalNumber = async (req, res) => {
+  try {
+    // Fetch orders with status "pending"
+    const completedOrders = await Order.find({ status: 'Completed' });
 
-module.exports = {submitOrder, getAllOrders,getTotalNumberOfOrders };
+    // Count the total number of pending orders
+    const totalCompletedOrders = completedOrders.length;
+
+    // Respond with the fetched data and total number of pending orders
+    res.status(200).json({
+      totalCompletedOrders,
+      completedOrders
+    });
+  } catch (error) {
+    // Respond with error if the fetch fails
+    res.status(500).json({
+      message: 'Failed to fetch pending orders',
+      error: error.message,  // Send the error message to the client
+    });
+  }
+};
+
+module.exports = {submitOrder, getAllOrdersAndTotalNumber, getAllPendingOrdersAndTotalNumber,getAllCompletedOrdersAndTotalNumber };
