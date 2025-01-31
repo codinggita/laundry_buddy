@@ -1,14 +1,22 @@
-const { Schema, model } = require("mongoose");
+// userOrder.js
+const { Schema, model } = require('mongoose');
+
 const orderSchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User', // Reference to the User model
+      required: true
+    },
     name: {
       type: String,
       required: true,
-      trim: true, // Removes extra spaces
+      trim: true,
     },
     bagNumber: {
       type: Number,
       required: true,
+      unique: true,
     },
     buildingName: {
       type: String,
@@ -30,17 +38,17 @@ const orderSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now, // Automatically set the order creation time
+      default: Date.now,
     },
     status: {
       type: String,
-      enum: ["Pending", "In Progress", "Completed", "Delivered"], // Optional status field
-      default: "Completed",
+      enum: ['Pending', 'In Progress', 'Completed', 'Delivered'],
+      default: 'Completed',
     },
   },
   {
-    collection: "orders", // Explicitly set the collection name if needed
+    collection: 'orders',
   }
 );
 
-module.exports = model("Order", orderSchema);
+module.exports = model('Order', orderSchema);
