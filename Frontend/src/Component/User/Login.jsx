@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { RiTShirt2Line } from "react-icons/ri";
 import axios from "axios";
@@ -8,6 +9,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State to store error messages
   const [success, setSuccess] = useState(""); // State to store success messages
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,10 +27,12 @@ const Login = () => {
       setSuccess(`Welcome back, ${response.data.name}!`); // Set success message
       console.log("Login successful:", response.data);
 
-      if(response.data.message){
-        
+
+      if(response.status ===200 && response.data.role==="user"){       //navigate the user to dashbaord page
+        navigate('/userdashboard')
       }
-      // Redirect or store user data (e.g., using context or localStorage)
+      
+
     } catch (error) {
       // Handle specific error messages from the API
       if (error.response && error.response.data.message) {
