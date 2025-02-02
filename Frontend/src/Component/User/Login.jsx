@@ -31,6 +31,10 @@ const Login = () => {
       if(response.status ===200 && response.data.role==="user"){       //navigate the user to dashbaord page
         navigate('/userdashboard')
       }
+
+      else if (response.status ===200 && response.data.role==="worker"){
+        navigate('/workerdashboard')
+      }
       
 
     } catch (error) {

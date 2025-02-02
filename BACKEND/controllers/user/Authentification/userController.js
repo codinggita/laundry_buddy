@@ -19,9 +19,13 @@ const registerUser = async (req, res) => {
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists with this email.' });
+      return res.status(400).json({ message: 'User already exists with this email.' }); 
     }
 
+    const existingNumber = await User.findOne({phoneNumber});
+    if(existingNumber){
+      return res.status(400).json({message: ' 📞 Phonenumber is already in use'})
+    }
 
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -43,7 +47,7 @@ const registerUser = async (req, res) => {
     // Save the user to the database
     await newUser.save();
 
-    res.status(201).json({ message: 'User registered successfully', user: newUser });
+    res.status(201).json({ success:true,message: 'User registered successfully', user: newUser });
   } catch (error) {
     res.status(500).json({ message: 'Failed to register user', error: error.message });
   }

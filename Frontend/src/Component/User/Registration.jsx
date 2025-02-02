@@ -1,8 +1,66 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { RiTShirt2Line } from "react-icons/ri";
+import axios from "axios";
 
 const Registration = () => {
+
+const [name,setName]=useState('');
+const [email,setEmail]=useState('');
+const [number,setNumber]=useState('');
+const [room,setRoom]=useState('');
+const [building,setBuilding]=useState('');
+const [password,setPassword]=useState('');
+const [confirmpassword,setconfirmPassword]=useState('');
+const [error,setError]=useState('');
+const [success,setSuccess]=useState('');
+
+const navigate=useNavigate();
+const handleSubmit = async (e) =>{
+  e.preventDefault();
+  setError('');
+  setSuccess('');
+
+  if (password !== confirmpassword) {
+    setError( 'Passwords do not match.' );
+   return
+  }
+
+  try{
+    const response = await axios.post('http://localhost:3000/user/signup',
+      {name,
+      email,
+      phoneNumber:number,
+      roomNumber:room,
+      buildingName:building,
+      password,
+      confirmPassword:password
+    }
+    );
+    if(response.data.message){
+      setSuccess("Registration Successfull")
+    }
+    if(response.status===201){
+      setTimeout(()=>{
+        navigate('/login')
+      },3000)
+     
+    }
+  }
+
+
+  
+  catch (error) {
+    // Handle specific error messages from the API
+    if (error.response && error.response.data.message) {
+      setError(error.response.data.message); // Set error message from the API
+    } else {
+      setError("An error occurred. Please try again."); // Generic error message
+    }
+  }
+}
+
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-md">
@@ -17,8 +75,22 @@ const Registration = () => {
           <p className="text-gray-600 text-center">Join our laundry service today</p>
         </div>
 
+        {/* Success Message */}
+        {success && (
+          <div className="mb-4 p-3 bg-green-50 border-l-4 border-green-400 text-green-700 text-sm rounded">
+            <span className="font-medium">Success:</span> {success}
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-400 text-red-700 text-sm rounded">
+            <span className="font-medium">Error:</span> {error}
+          </div>
+        )}
+
         {/* Form */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Full Name */}
             <div>
@@ -30,6 +102,7 @@ const Registration = () => {
                 id="full-name"
                 placeholder="John Doe"
                 className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 
@@ -43,6 +116,8 @@ const Registration = () => {
                 id="email"
                 placeholder="john@example.com"
                 className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setEmail(e.target.value)}
+
               />
             </div>
 
@@ -56,6 +131,8 @@ const Registration = () => {
                 id="phone"
                 placeholder="+1 (555) 000-0000"
                 className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setNumber(e.target.value)}
+
               />
             </div>
 
@@ -69,6 +146,8 @@ const Registration = () => {
                 id="room"
                 placeholder="Room 101"
                 className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setRoom(e.target.value)}
+
               />
             </div>
 
@@ -82,6 +161,8 @@ const Registration = () => {
                 id="building"
                 placeholder="Boys-Hostel"
                 className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setBuilding(e.target.value)}
+
               />
             </div>
 
@@ -95,6 +176,8 @@ const Registration = () => {
                 id="password"
                 placeholder="Create password"
                 className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setPassword(e.target.value)}
+
               />
             </div>
 
@@ -108,6 +191,7 @@ const Registration = () => {
                 id="confirm-password"
                 placeholder="Confirm password"
                 className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) =>setconfirmPassword(e.target.value)}
               />
             </div>
           </div>
