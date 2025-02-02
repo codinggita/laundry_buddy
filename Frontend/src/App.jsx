@@ -5,6 +5,7 @@ import Dashboard from './Component/User/Dashboard';
 import Login from './Component/User/Login';
 import Registration from './Component/User/Registration';
 import ResetPassword from './Component/User/ForgotPassword';
+import WorkerDashbaord from './Component/Worker/workerDashbaord';
 function App() {
 
 
@@ -17,6 +18,7 @@ function App() {
       <Route path="/resetpassword" element={<ResetPassword />} />
     <Route index element={<div className='bg-softBlue min-h-screen'><RoleSelector /></div>} />
     <Route path="/userdashboard" element={<div className="bg-softBlue min-h-screen"> <Dashboard /></div>}  />    
+    <Route path="/workerdashboard" element={ <WorkerDashbaord /> } />  
     </Routes>
     </BrowserRouter>
     </>
