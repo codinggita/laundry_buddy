@@ -1,5 +1,6 @@
 // controllers/userController.js
 const User = require('../../../models/user'); // Import the user schema
+const Worker =require('../../../models/Worker/workerModel')
 const bcrypt = require('bcryptjs');  // Required for comparing hashed passwords
 
 const registerUser = async (req, res) => {
@@ -33,7 +34,10 @@ const registerUser = async (req, res) => {
       phoneNumber,
       buildingName,
       roomNumber,
-      password: hashedPassword
+      password: hashedPassword,
+      
+    
+
     });
 
     // Save the user to the database
@@ -50,7 +54,7 @@ const loginUser = async (req, res) => {
 
   try {
     // Check if user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }) || await Worker.findOne({ email });
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -59,13 +63,17 @@ const loginUser = async (req, res) => {
     // Compare password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid password" });
     }
 
     // Login successful
     res.status(200).json({
+      success:true,
       message: "Login successful",
-      userId: user._id,  // Returning user ID (you can use this ID for further operations)
+      name:user.name,
+      userId: user._id,
+      role :user.role
+        // Returning user ID (you can use this ID for further operations)
     });
   } catch (error) {
     res.status(500).json({ message: 'Login failed', error: error.message });

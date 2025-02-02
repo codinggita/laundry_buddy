@@ -30,6 +30,11 @@ const userSchema = new Schema(
       required: true,
       minlength: 6, // Minimum password length
     },
+    role: {
+      type: String,
+      enum : ['admin', 'user', 'worker'],
+      default: "user"
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt
