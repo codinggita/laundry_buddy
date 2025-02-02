@@ -1,0 +1,6 @@
+/* Adjust the content */
+.dashboard-content {
+    margin-left: 256px; /* Sidebar width */
+    padding: 20px;      /* Adjust padding as needed */
+  }
+  
