@@ -29,11 +29,17 @@ const Login = () => {
 
 
       if(response.status ===200 && response.data.role==="user"){       //navigate the user to dashbaord page
-        navigate('/userdashboard')
+        
+        setTimeout(()=>{
+          navigate('/userdashboard')
+        },2000)
+       
       }
 
       else if (response.status ===200 && response.data.role==="worker"){
-        navigate('/workerdashboard')
+        setTimeout(()=>{
+          navigate('/workerdashboard')
+        },2000)
       }
       
 
