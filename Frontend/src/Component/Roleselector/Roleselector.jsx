@@ -43,12 +43,11 @@ const RoleSelector = () => {
             <p className="text-gray-600 mb-4">
               Access your work dashboard, manage orders, and track your tasks
             </p>
-            <a
-              href="#"
+          <Link 
               className="text-blue-500 font-semibold hover:underline"
-            >
+            to='/login'>
               Get Started →
-            </a>
+              </Link>
           </div>
 
           {/* Admin Card */}

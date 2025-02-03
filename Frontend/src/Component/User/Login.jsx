@@ -27,16 +27,17 @@ const Login = () => {
       setSuccess(`Welcome back, ${response.data.name}!`); // Set success message
       console.log("Login successful:", response.data);
 
+      if (response.status === 200 && response.data.role === "user") {
+        //navigate the user to dashbaord page
 
-      if(response.status ===200 && response.data.role==="user"){       //navigate the user to dashbaord page
-        navigate('/userdashboard')
+        setTimeout(() => {
+          navigate("/userdashboard");
+        }, 2000);
+      } else if (response.status === 200 && response.data.role === "worker") {
+        setTimeout(() => {
+          navigate("/workerdashboard");
+        }, 2000);
       }
-
-      else if (response.status ===200 && response.data.role==="worker"){
-        navigate('/workerdashboard')
-      }
-      
-
     } catch (error) {
       // Handle specific error messages from the API
       if (error.response && error.response.data.message) {
@@ -126,12 +127,12 @@ const Login = () => {
 
         {/* Forgot Password Link */}
         <div className="mt-4 text-center">
-          <a
-            href="#"
+          <Link
             className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+            to="/resetpassword"
           >
             Forgot your password?
-          </a>
+          </Link>
         </div>
 
         {/* Sign Up Link */}
