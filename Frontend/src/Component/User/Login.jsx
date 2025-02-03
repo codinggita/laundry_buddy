@@ -31,6 +31,16 @@ const Login = () => {
       if(response.status ===200 && response.data.role==="user"){       //navigate the user to dashbaord page
         navigate('/userdashboard')
       }
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+      else if (response.status ===200 && response.data.role==="worker"){
+        navigate('/workerdashboard')
+      }
+=======
+>>>>>>> 39af41b69519d8e912ca8274b00e431c57b7886f
+>>>>>>> Stashed changes
       
 
     } catch (error) {
