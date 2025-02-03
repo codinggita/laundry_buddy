@@ -3,7 +3,7 @@ import './App.css'
 import RoleSelector from './Component/Roleselector/RoleSelector'
 import Dashboard from './Component/User/Dashboard';
 import Login from './Component/User/Login';
-import Registration from './Component/User/Registration';
+import Registration from './Component/User/Registration.jsx';
 import ResetPassword from './Component/User/ForgotPassword';
 import WorkerDashbaord from './Component/Worker/workerDashbaord';
 function App() {
