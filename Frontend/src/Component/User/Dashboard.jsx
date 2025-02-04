@@ -51,17 +51,17 @@ const Dashboard = () => {
 
       {/* Dashboard Content */}
       <div className="min-h-screen bg-gray-100 p-6 ml-0 md:ml-64">
-        <header className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-gray-600">
-            {new Date().toLocaleDateString("en-US", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </header>
+      <header className="flex justify-between items-center mb-4 flex-wrap">
+  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Dashboard</h1>
+  <p className="text-sm sm:text-base text-gray-600">
+    {new Date().toLocaleDateString("en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })}
+  </p>
+</header>
 
         <div className="grid grid-cols-3 gap-4 mb-6">
           <Card

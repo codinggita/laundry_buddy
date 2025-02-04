@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { MdOutlineDashboard } from "react-icons/md";
 import { RiTShirt2Line } from "react-icons/ri";
 import { RiHistoryFill } from "react-icons/ri";
 import { FaRegChartBar } from "react-icons/fa";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { CiWarning } from "react-icons/ci";
+import { NavLink, Link } from "react-router-dom";
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +53,7 @@ function Sidebar() {
       {/* Sidebar */}
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform z-20 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 md:translate-x-0`}
       >
         {/* Header */}
@@ -63,35 +64,104 @@ function Sidebar() {
         {/* Menu */}
         <nav className="mt-4">
           <ul>
-            <li className="flex items-center p-3 px-8 text-blue-600 bg-blue-50 rounded-lg cursor-pointer">
-              <span className="text-xl mr-4"><MdOutlineDashboard /></span>
+            <NavLink
+              to="/user/userdashboard"
+              className={({ isActive }) =>
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
+                  isActive
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`
+              }
+            >
+              <span className="text-xl mr-4">
+                <MdOutlineDashboard />
+              </span>
               <span>Dashboard</span>
-            </li>
-            <li className="flex items-center p-3 px-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer">
-              <span className="text-xl mr-4"><RiTShirt2Line /></span>
+            </NavLink>
+
+              <NavLink
+              to="/user/submit-order"
+              className={({ isActive }) =>
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
+                  isActive
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`
+              }
+            >
+              <span className="text-xl mr-4">
+                <RiTShirt2Line />
+              </span>
               <span>Submit Order</span>
-            </li>
-            <li className="flex items-center p-3 px-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer">
-              <span className="text-xl mr-4"><RiHistoryFill /></span>
-              <span>Order History</span>
-            </li>
-            <li className="flex items-center p-3 px-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer">
-              <span className="text-xl mr-4"><FaRegChartBar /></span>
+            </NavLink>
+
+             <NavLink
+              to="/user/order-history"
+              className={({ isActive }) =>
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
+                  isActive
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`
+              }
+            >
+              <span className="text-xl mr-4">
+                <RiHistoryFill />
+              </span>
+              <span> Order History</span>
+            </NavLink>
+
+            <NavLink
+              to="/user/daily-rush"
+              className={({ isActive }) =>
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
+                  isActive
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`
+              }
+            >
+              <span className="text-xl mr-4">
+                <FaRegChartBar />
+              </span>
               <span>Daily Rush</span>
-            </li>
-            <li className="flex items-center p-3 px-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer">
-              <span className="text-xl mr-4"><RiAccountCircleLine /></span>
+            </NavLink>
+
+            <NavLink
+              to="/user/profile"
+              className={({ isActive }) =>
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
+                  isActive
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`
+              }
+            >
+              <span className="text-xl mr-4">
+                <RiAccountCircleLine />
+              </span>
+              
               <span>Profile</span>
-            </li>
-            <li className="flex items-center p-3 px-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg cursor-pointer">
-              <span className="text-xl mr-4"><CiWarning /></span>
+            </NavLink>
+
+            <NavLink
+              to="/user/complaint"
+              className={({ isActive }) =>
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
+                  isActive
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`
+              }
+            >
+              <span className="text-xl mr-4">
+              <CiWarning />              </span>
               <span>Complaint</span>
-            </li>
+            </NavLink>
           </ul>
         </nav>
       </div>
-
-    
     </div>
   );
 }
