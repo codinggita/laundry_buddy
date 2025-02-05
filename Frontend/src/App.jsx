@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link, BrowserRouter } from 'rea
 import './App.css'
 import RoleSelector from './Component/Roleselector/RoleSelector'
 import Dashboard from './Component/User/Dashboard';
+import Orderhistory from './Component/User/OrderHistory/Orderhistory.jsx';
 import Login from './Component/User/Login';
 import Registration from './Component/User/Registration.jsx';
 import ResetPassword from './Component/User/ForgotPassword';
@@ -18,6 +19,7 @@ function App() {
       <Route path="/resetpassword" element={<ResetPassword />} />
     <Route index element={<div className='bg-softBlue min-h-screen'><RoleSelector /></div>} />
     <Route path="/user/userdashboard" element={<div className="bg-softBlue min-h-screen"> <Dashboard /></div>}  />    
+    <Route path="/user/order-history" element={<div className="bg-historybg min-h-screen "> <Orderhistory /></div>}  />    
     <Route path="/workerdashboard" element={ <WorkerDashbaord /> } />  
     </Routes>
     </BrowserRouter>
