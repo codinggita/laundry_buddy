@@ -7,6 +7,7 @@ import Login from './Component/User/Login';
 import Registration from './Component/User/Registration.jsx';
 import ResetPassword from './Component/User/ForgotPassword';
 import WorkerDashbaord from './Component/Worker/workerDashbaord';
+import Submitorder from './Component/User/SubmitOrder/Submitorder.jsx';
 function App() {
 
 
@@ -20,6 +21,7 @@ function App() {
     <Route index element={<div className='bg-softBlue min-h-screen'><RoleSelector /></div>} />
     <Route path="/user/userdashboard" element={<div className="bg-softBlue min-h-screen"> <Dashboard /></div>}  />    
     <Route path="/user/order-history" element={<div className="bg-historybg min-h-screen "> <Orderhistory /></div>}  />    
+    <Route path="/user/submit-order" element={<div className="bg-historybg min-h-screen "> <Submitorder /></div>}  />    
     <Route path="/workerdashboard" element={ <WorkerDashbaord /> } />  
     </Routes>
     </BrowserRouter>
