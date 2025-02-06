@@ -113,7 +113,7 @@ export default function Orderhistory() {
   ];
 
   return (
-    <>
+    <div>
     <div>
         <Sidebar />
     </div>
@@ -160,6 +160,6 @@ export default function Orderhistory() {
         ))}
       </div>
     </div>
-    </>
+    </div>
   );
 }
