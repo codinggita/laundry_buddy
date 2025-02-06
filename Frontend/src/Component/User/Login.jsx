@@ -31,7 +31,7 @@ const Login = () => {
         //navigate the user to dashbaord page
 
         setTimeout(() => {
-          navigate("/userdashboard");
+          navigate("/user/userdashboard");
         }, 2000);
       } else if (response.status === 200 && response.data.role === "worker") {
         setTimeout(() => {

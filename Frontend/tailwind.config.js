@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        softBlue: '#EEF4FF', historybg : '#F3F4F6' // Add your custom color here
+        softBlue: '#F3F4F6', historybg : '#F3F4F6' // Add your custom color here
       },
     },
   },

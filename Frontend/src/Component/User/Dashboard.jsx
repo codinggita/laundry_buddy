@@ -11,57 +11,60 @@ import {
   Clock,
   Package,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const Dashboard = () => {
   const cards = [
     {
       title: "Submit Order",
       icon: Shirt,
-      route: "/submit-order",
+      route: "/user/submit-order",
       color: "bg-blue-500",
       description: "Submit new laundry items for processing",
     },
     {
       title: "Order History",
       icon: History,
-      route: "/history",
+      route: "/user/order-history",
       color: "bg-purple-500",
       description: "View and track your past orders",
     },
     {
       title: "Daily Rush",
       icon: BarChart3,
-      route: "/daily-rush",
+      route: "/user/daily-rush",
       color: "bg-green-500",
       description: "Check peak hours and plan accordingly",
     },
     {
       title: "Profile",
       icon: User,
-      route: "/profile",
+      route: "/user/profile",
       color: "bg-orange-500",
       description: "Manage your account settings",
     },
   ];
 
   return (
-    <div className="flex">
+    <>
       {/* Sidebar */}
       <Sidebar />
 
       {/* Dashboard Content */}
       <div className="min-h-screen bg-gray-100 p-6 ml-0 md:ml-64">
-      <header className="flex justify-between items-center mb-4 flex-wrap">
-  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Dashboard</h1>
-  <p className="text-sm sm:text-base text-gray-600">
-    {new Date().toLocaleDateString("en-US", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })}
-  </p>
-</header>
+        <header className="flex justify-between items-center mb-4 flex-wrap">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
+            Dashboard
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600">
+            {new Date().toLocaleDateString("en-US", {
+              weekday: "short",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
+        </header>
 
         <div className="grid grid-cols-3 gap-4 mb-6">
           <Card
@@ -117,8 +120,9 @@ const Dashboard = () => {
         {/* Quicks naviagtes*/}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-9">
           {cards.map((card) => (
-            <div
+            <NavLink
               key={card.title}
+              to={card.route}
               className="cursor-pointer group hover:scale-105 transition-all duration-200 bg-white shadow-md rounded-xl p-6"
             >
               <div className="flex items-center space-x-4">
@@ -134,11 +138,11 @@ const Dashboard = () => {
                   <p className="text-sm text-gray-600">{card.description}</p>
                 </div>
               </div>
-            </div>
+            </NavLink>
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
