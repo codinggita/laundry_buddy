@@ -118,7 +118,7 @@ export default function Orderhistory() {
         <Sidebar />
     </div>
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">Order History</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-4">Order History</h1>
       {/* <p className="text-gray-500">View your past laundry orders</p> */}
       <div className="bg-white shadow-md rounded-lg p-4 mt-4 ">
         <div className=" p-4 rounded-lg border-b">
