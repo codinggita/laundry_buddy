@@ -88,7 +88,7 @@ export default function SubmitOrder() {
                 <div className="flex items-center border rounded-lg p-3 bg-gray-50">
                   <Package className="w-5 h-5 text-gray-400 mr-2" />
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Bag Number"
                     className="w-full bg-transparent outline-none"
                   />
