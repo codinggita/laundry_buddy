@@ -23,7 +23,7 @@ function App() {
     <Route path="/user/userdashboard" element={<div className="bg-softBlue min-h-screen"> <Dashboard /></div>}  />    
     <Route path="/user/order-history" element={<div className="bg-historybg min-h-screen "> <Orderhistory /></div>}  />    
     <Route path="/user/submit-order" element={<div className="bg-historybg min-h-screen "> <Submitorder /></div>}  />    
-    <Route path="/user/profile" element={<div className="bg-historybg min-h-screen "> <Profile /></div>}  />    
+    <Route path="/user/profile" element={<div className="bg-softBlue min-h-screen "> <Profile /></div>}  />    
     <Route path="/workerdashboard" element={ <WorkerDashbaord /> } />  
     </Routes>
     </BrowserRouter>
