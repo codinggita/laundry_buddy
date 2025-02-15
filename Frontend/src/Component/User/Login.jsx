@@ -27,6 +27,16 @@ const Login = () => {
       setSuccess(`Welcome back, ${response.data.name}!`); // Set success message
       console.log("Login successful:", response.data);
 
+      if(response.status===200){
+      
+
+          localStorage.setItem("token",response.data.token);
+          localStorage.setItem("role",response.data.role);
+          localStorage.setItem("userId",response.data.userId);
+        
+      }
+     
+
       if (response.status === 200 && response.data.role === "user") {
         //navigate the user to dashbaord page
 
@@ -39,6 +49,7 @@ const Login = () => {
         }, 2000);
       }
     } catch (error) {
+      setSuccess("")
       // Handle specific error messages from the API
       if (error.response && error.response.data.message) {
         setError(error.response.data.message); // Set error message from the API
