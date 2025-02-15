@@ -2,6 +2,7 @@
 const User = require('../../../models/user'); // Import the user schema
 const Worker =require('../../../models/Worker/workerModel')
 const bcrypt = require('bcryptjs');  // Required for comparing hashed passwords
+const jwt = require('jsonwebtoken')
 
 const registerUser = async (req, res) => {
   const { name, email, phoneNumber, buildingName, roomNumber, password, confirmPassword } = req.body;
@@ -70,14 +71,24 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
+
+    const token = jwt.sign(
+      {
+      userId: user._id,
+      role :user.role
+    },
+    process.env.JWT_SECRET, 
+    { expiresIn: '1h' }
+    );
+
     // Login successful
     res.status(200).json({
       success:true,
       message: "Login successful",
-      name:user.name,
+      token,
+      name: user.name,
       userId: user._id,
-      role :user.role
-        // Returning user ID (you can use this ID for further operations)
+      role: user.role
     });
   } catch (error) {
     res.status(500).json({ message: 'Login failed', error: error.message });
