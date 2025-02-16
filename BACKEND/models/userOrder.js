@@ -8,24 +8,6 @@ const orderSchema = new Schema(
       ref: 'User', // Reference to the User model
       required: true
     },
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    bagNumber: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
-    buildingName: {
-      type: String,
-      required: true,
-    },
-    roomNumber: {
-      type: String,
-      required: true,
-    },
     numberOfClothes: {
       type: Number,
       required: true,
@@ -43,7 +25,7 @@ const orderSchema = new Schema(
     status: {
       type: String,
       enum: ['Pending', 'In Progress', 'Completed', 'Delivered'],
-      default: 'Completed',
+      default: 'Pending',
     },
   },
   {
