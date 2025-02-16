@@ -2,25 +2,13 @@ const Order = require("../../../models/userOrder");
 
 const submitOrder = async (req, res) => {
   try {
-    const { name, bagNumber, buildingName, roomNumber, numberOfClothes, weight } = req.body;
+    const {  numberOfClothes, weight } = req.body;
 
-    // console.log("Authenticated User:", req.user);
       const userId = req.user.userId;
-      // console.log("Extracted user id:", userId);
-
-    // Check if bagNumber already exists
-    const existingOrder = await Order.findOne({ bagNumber });
-    if (existingOrder) {
-      return res.status(400).json({ message: 'Order with this bag number already exists.' });
-    }
-
+    
     // Create a new order and associate it with the user's ID
     const newOrder = new Order({
       userId,  // Link the order to the user by userId
-      name,
-      bagNumber,
-      buildingName,
-      roomNumber,
       numberOfClothes,
       weight,
     });
