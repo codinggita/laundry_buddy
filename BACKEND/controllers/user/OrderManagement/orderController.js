@@ -1,4 +1,5 @@
 const Order = require("../../../models/userOrder");
+const mongoose = require('mongoose')
 
 const submitOrder = async (req, res) => {
   try {
@@ -26,91 +27,62 @@ const submitOrder = async (req, res) => {
 
 // Get all orderes with number of  orders
 
-const getAllOrdersAndTotalNumber = async (req, res) => {
+const getOrderSummary = async (req, res) => {
   try {
-    // Fetch all orders from the database
-    const orders = await Order.find({});
+    console.log("Extracted User ID:", req.user.userId);
+    console.log("type of User ID:", typeof req.user.userId);
+
+    const userId =  new mongoose.Types.ObjectId(req.user.userId);
+   const orders = await Order.find({userId}).sort({createdAt : -1})
+
+   if(!orders || orders.length === 0 ){
+    return res.status(404).json({message:"No order found"});
+   }
+
+  //  Pending order
+    const pendingOrders = await Order.find({status:"Pending"})
+
+  //  length of pending order
+    const lengthOfPending = pendingOrders.length;
+
+  //  Completed order
+    const completeOrders = await Order.find({status:"Pending"})
+
+  //  length of completed order
+    const lengthOfComplete = completeOrders.length;
     
-    // Count the total number of orders
-    const totalOrders = orders.length;
+   const formattedOrders = orders.map(order => ({
+    orderId: order._id,
+    numberOfClothes: order.numberOfClothes,
+    weight: order.weight,
+    status: order.status,
+    createdAt: new Date(order.createdAt).toLocaleString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    })
+}));
 
-    // Respond with the fetched data and the total number of orders
-    res.status(200).json({
-      totalOrders,
-      orders
-    });
+res.status(200).json({
+  lengthOfPending,
+  lengthOfComplete,
+  order:formattedOrders
+})
+
+
   } catch (error) {
     // Respond with error if the fetch fails
     res.status(500).json({
-      message: 'Failed to fetch orders and count total',
+      message: 'Failed to fetch orders',
       error: error.message,  // Send the error message to the client
     });
   }
 };
 
-const getAllPendingOrdersAndTotalNumber = async (req, res) => {
-  try {
-    // Fetch orders with status "pending"
-    const pendingOrders = await Order.find({ status: 'Pending' });
-
-    // Count the total number of pending orders
-    const totalPendingOrders = pendingOrders.length;
-
-    // Respond with the fetched data and total number of pending orders
-    res.status(200).json({
-      totalPendingOrders,
-      pendingOrders
-    });
-  } catch (error) {
-    // Respond with error if the fetch fails
-    res.status(500).json({
-      message: 'Failed to fetch pending orders',
-      error: error.message,  // Send the error message to the client
-    });
-  }
-};
-const getAllCompletedOrdersAndTotalNumber = async (req, res) => {
-  try {
-    // Fetch orders with status "pending"
-    const completedOrders = await Order.find({ status: 'Completed' });
-
-    // Count the total number of pending orders
-    const totalCompletedOrders = completedOrders.length;
-
-    // Respond with the fetched data and total number of pending orders
-    res.status(200).json({
-      totalCompletedOrders,
-      completedOrders
-    });
-  } catch (error) {
-    // Respond with error if the fetch fails
-    res.status(500).json({
-      message: 'Failed to fetch pending orders',
-      error: error.message,  // Send the error message to the client
-    });
-  }
-};
-
-const deleteOrderBybagNumber = async (req,res) => {
-const {bagNumber}=req.params
-  try{
-    const deleteOrder = await Order.findOneAndDelete({bagNumber})
-  
-  if(!deleteOrder){
-    res.status(404).json({message:"Order not found"})
-  }
-  res.status(200).json({
-    message: "Order deleted successfully",
-    order:deleteOrder
-  })
-}
-catch(error){
-  res.status(500).json({
-    message:"Failed to delete Order",
-    error:error.message
-  })
-}
-};
 
 
-module.exports = {submitOrder, getAllOrdersAndTotalNumber, getAllPendingOrdersAndTotalNumber,getAllCompletedOrdersAndTotalNumber,deleteOrderBybagNumber };
+module.exports = {submitOrder, getOrderSummary };
