@@ -5,10 +5,10 @@ const bcrypt = require('bcryptjs');  // Required for comparing hashed passwords
 const jwt = require('jsonwebtoken')
 
 const registerUser = async (req, res) => {
-  const { name, email, phoneNumber, buildingName, roomNumber, password, confirmPassword } = req.body;
+  const { name, email, phoneNumber, buildingName, roomNumber,bagNumber, password, confirmPassword } = req.body;
 
   // Basic validations
-  if (!name || !email || !phoneNumber || !buildingName || !roomNumber || !password || !confirmPassword) {
+  if (!name || !email || !phoneNumber || !buildingName || !roomNumber || !bagNumber || !password || !confirmPassword) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
@@ -39,6 +39,7 @@ const registerUser = async (req, res) => {
       phoneNumber,
       buildingName,
       roomNumber,
+      bagNumber,
       password: hashedPassword,
       
     
