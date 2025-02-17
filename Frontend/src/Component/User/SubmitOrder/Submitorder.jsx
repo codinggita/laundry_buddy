@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext ,useEffect, useState } from "react";
+import { OrderContext } from "./OrderContext";
 import axios from 'axios'
 import {
   Package,
@@ -35,6 +36,11 @@ export default function SubmitOrder() {
     }
   };
 
+
+  // to send data for orderconfirmation component
+  const {weight,setWeight,numberofitems,setNumberOfItems,bagNumber,setBagNumber}= useContext(OrderContext)
+
+
   // To get the user deatails for submit form 
 
   const [user, setUser] = useState({});
@@ -56,6 +62,7 @@ export default function SubmitOrder() {
         // console.log("api response ",data);
 
         setUser(data)
+        setBagNumber(data.bagNumber)
 
       } catch (error) {
         setError(error.response?.data?.message || error.message)
@@ -68,8 +75,8 @@ export default function SubmitOrder() {
   }, []);
 
   // to post the form of order
-  const [weight, setWeight] = useState('');
-  const [numberofitems, setNumberOfItems] = useState('');
+  // const [weight, setWeight] = useState('');
+  // const [numberofitems, setNumberOfItems] = useState('');
   const naviagte =useNavigate();
 
   const handleSubmitOrder = async (e) => {
