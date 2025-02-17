@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Loader = () => {
+const LoaderM = () => {
   return (
     <StyledWrapper>
       <div className="loader" />
@@ -13,7 +13,7 @@ const StyledWrapper = styled.div`
   .loader {
     width: 120px;
     height: 150px;
-    background-color: #fff;
+    background-color: #BBDEFB;
     background-repeat: no-repeat;
     background-image: linear-gradient(#ddd 50%, #bbb 51%),
       linear-gradient(#ddd, #ddd), linear-gradient(#ddd, #ddd),
@@ -94,4 +94,4 @@ const StyledWrapper = styled.div`
     }
   }`;
 
-export default Loader;
+export default LoaderM;
