@@ -1,10 +1,13 @@
 import { CheckCircle, Clock} from "lucide-react";
 import Sidebar from "../Sidebar";
 import { Link } from "react-router-dom";
+import { OrderContext } from "./OrderContext";
+import { useContext } from "react";
 
 
 
 const OrderConfirmation = () => {
+const{weight ,numberofitems,bagNumber} = useContext(OrderContext);
   return (
     <div className="">
       {/* Sidebar */}
@@ -22,16 +25,16 @@ const OrderConfirmation = () => {
         {/* Order Summary */}
         <div className="bg-white shadow-md rounded-lg p-4 mt-6 w-80">
           <div className="flex justify-between text-gray-600">
-            <span>Order Number</span>
-            <span className="font-bold">#</span>
+            <span>Bag Number</span>
+            <span className="font-bold">{bagNumber}</span>
           </div>
           <div className="flex justify-between text-gray-600 mt-2">
             <span>Items</span>
-            <span className="font-bold">0 pieces</span>
+            <span className="font-bold"> {numberofitems} pieces</span>
           </div>
           <div className="flex justify-between text-gray-600 mt-2">
-            <span>Service Type</span>
-            <span className="font-bold">Standard</span>
+            <span>Weight</span>
+            <span className="font-bold">{weight} Kg</span>
           </div>
         </div>
 
