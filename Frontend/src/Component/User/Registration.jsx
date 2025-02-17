@@ -9,6 +9,7 @@ const [name,setName]=useState('');
 const [email,setEmail]=useState('');
 const [number,setNumber]=useState('');
 const [room,setRoom]=useState('');
+const [bag,setBag]=useState('');
 const [building,setBuilding]=useState('');
 const [password,setPassword]=useState('');
 const [confirmpassword,setconfirmPassword]=useState('');
@@ -32,6 +33,7 @@ const handleSubmit = async (e) =>{
       email,
       phoneNumber:number,
       roomNumber:room,
+      bagNumber:bag,
       buildingName:building,
       password,
       confirmPassword:password
@@ -151,8 +153,23 @@ const handleSubmit = async (e) =>{
               />
             </div>
 
+            {/* Bag Number */}
+            <div>
+              <label htmlFor="room" className="block text-sm font-medium text-gray-700">
+                Bag Number
+              </label>
+              <input
+                type="text"
+                id="bag"
+                placeholder="#123"
+                className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => setBag(e.target.value)}
+
+              />
+            </div>
+
             {/* Building */}
-            <div className="sm:col-span-2">
+            <div >
               <label htmlFor="building" className="block text-sm font-medium text-gray-700">
                 Building
               </label>
