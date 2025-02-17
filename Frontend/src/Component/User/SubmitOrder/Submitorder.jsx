@@ -38,7 +38,7 @@ export default function SubmitOrder() {
 
 
   // to send data for orderconfirmation component
-  const {weight,setWeight,numberofitems,setNumberOfItems,bagNumber,setBagNumber}= useContext(OrderContext)
+  const {weight,setWeight,numberofitems,setNumberOfItems,bagNumber,setBagNumber,setRoomNumber}= useContext(OrderContext)
 
 
   // To get the user deatails for submit form 
@@ -63,6 +63,7 @@ export default function SubmitOrder() {
 
         setUser(data)
         setBagNumber(data.bagNumber)
+        setRoomNumber(data.roomNumber)
 
       } catch (error) {
         setError(error.response?.data?.message || error.message)
@@ -141,7 +142,7 @@ export default function SubmitOrder() {
       <Sidebar />
 
       
-    <orderConfirmation />
+    
 
         {/* Main Content */}
         <div className="min-h-screen bg-gray-100 p-6 ml-0 md:ml-96 w-full">
