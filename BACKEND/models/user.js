@@ -39,6 +39,10 @@ const userSchema = new Schema(
       enum : ['admin', 'user', 'worker'],
       default: "user"
     },
+    address: {
+      type: String,
+      default : " ",
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt
