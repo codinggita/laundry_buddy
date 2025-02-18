@@ -1,6 +1,7 @@
 import Sidebar from "../Sidebar";
 import { Building2, Phone, MapPin, Package, Camera } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Profile() {
   const [image, setImage] = useState(null);
@@ -13,6 +14,35 @@ export default function Profile() {
       setImage(imageURL);
     }
   };
+
+// fetch the user deatils
+const[user,setUser]=useState({});
+const[bagnumber,setBagNumber]=useState("");
+useEffect(()=>{
+  const fetchUSer = async ()  =>{
+    try{
+
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get("http://localhost:3000/user/profile", {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        const data = await response.data
+        
+        setUser(data);
+        setBagNumber(data.bagNumber)
+
+    }catch(error){
+      console.error(error.response?.data?.message || error.message);
+    }
+
+
+  }
+  fetchUSer();
+},[])
+
+
   return (
     <div className="md:flex min-h-screen">
       {/* Sidebar */}
@@ -35,8 +65,8 @@ export default function Profile() {
               JD {/* Static initials instead of upload */}
             </div>
             <div>
-              <h3 className="font-semibold text-lg">John Doe</h3>
-              <p className="text-sm text-gray-500">john.doe@university.edu</p>
+              <h3 className="font-semibold text-lg">{user.name}</h3>
+              <p className="text-sm text-gray-500">{user.email}</p>
             </div>
           </div>
 
@@ -45,25 +75,25 @@ export default function Profile() {
 
               <div className="flex items-center focus-within:border-black focus-within:border-2 border rounded-lg p-3  ">
                 <Phone className="w-5 h-5 text-gray-400 mr-2" />
-                <input type="phone" placeholder="Phone Number" className="w-full bg-transparent outline-none" />
+                <input type="phone" placeholder="Phone Number" value= {user.phoneNumber} className="w-full bg-transparent outline-none" />
               </div>
               <div className="flex items-center focus-within:border-black focus-within:border-2 border rounded-lg p-3">
                 <Building2 className="w-5 h-5 text-gray-400 mr-2" />
-                <input type="text" placeholder="Room Number" className="w-full bg-transparent outline-none" />
+                <input type="text" placeholder="Room Number" value={user.roomNumber} className="w-full bg-transparent outline-none" />
               </div>
               <div className="flex items-center border focus-within:border-black focus-within:border-2 rounded-lg p-3 ">
                 <Package className="w-5 h-5 text-gray-400 mr-2" />
-                <input type="number" placeholder="Bag Number" className="w-full bg-transparent outline-none" />
+                <input type="number" placeholder="Bag Number" value={bagnumber} className="w-full bg-transparent outline-none" />
               </div>
               <div className="flex items-center border  focus-within:border-black focus-within:border-2 rounded-lg p-3">
                 <Building2 className="w-5 h-5 text-gray-400 mr-2" />
-                <input type="text" placeholder="Building" className="w-full bg-transparent outline-none" />
+                <input type="text" placeholder="Building" value={user.buildingName} className="w-full bg-transparent outline-none" />
               </div>
             </div>
 
             <div className="space-y-2 mt-4">
               <label className="text-sm font-medium" htmlFor="address">Address</label>
-              <textarea id="address" name="address" className="w-full border rounded-lg p-3" rows="3" placeholder="Enter your address"></textarea>
+              <textarea id="address" name="address" value={user.address} className="w-full border rounded-lg p-3" rows="3" placeholder="Enter your address"></textarea>
             </div>
 
             <div className="flex justify-end mt-4">
