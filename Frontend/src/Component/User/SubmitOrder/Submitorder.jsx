@@ -198,13 +198,13 @@ export default function SubmitOrder() {
             {step === 1 && (
               <>
                 <h3 className="text-lg font-semibold">Order Details</h3>
-                <p className="text-sm text-gray-500">
-                  Fill in your laundry details
-                </p>
+<p className="text-sm text-gray-500">
+  Fill in your laundry details
+</p>
 
-                {/* Error Handling */}
+{/* Error Handling */}
 
-                {weightError && (
+{weightError && (
                   <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-4xl mx-auto mt-4">
                     <div className="flex items-start space-x-3">
                       <div>
@@ -235,68 +235,84 @@ export default function SubmitOrder() {
                   </div>
                 )}
 
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+  <div className="flex flex-col">
+    <label className="text-base text-black">Bag Number</label>
+    <div className="flex items-center border rounded-lg p-3 bg-gray-50">
+      <Package className="w-5 h-5 text-gray-400 mr-2" />
+      <input
+        type="number"
+        placeholder="Bag Number"
+        value={user.bagNumber}
+        className="w-full bg-transparent outline-none"
+      />
+    </div>
+  </div>
+  <div className="flex flex-col">
+    <label className="text-base text-black">Name</label>
+    <div className="flex items-center border rounded-lg p-3 bg-gray-50">
+      <User className="w-5 h-5 text-gray-400 mr-2" />
+      <input
+        type="text"
+        placeholder="Name"
+        value={user.name}
+        className="w-full bg-transparent outline-none"
+      />
+    </div>
+  </div>
+  <div className="flex flex-col">
+    <label className="text-base text-black">Room Number</label>
+    <div className="flex items-center border rounded-lg p-3 bg-gray-50">
+      <Building className="w-5 h-5 text-gray-400 mr-2" />
+      <input
+        type="text"
+        placeholder="Room Number"
+        value={user.roomNumber}
+        className="w-full bg-transparent outline-none"
+        readOnly
+      />
+    </div>
+  </div>
+  <div className="flex flex-col">
+    <label className="text-base text-black">Building</label>
+    <div className="flex items-center border rounded-lg p-3 bg-gray-50">
+      <Home className="w-5 h-5 text-gray-400 mr-2" />
+      <input
+        type="text"
+        placeholder="Building"
+        value={user.buildingName}
+        className="w-full bg-transparent outline-none"
+      />
+    </div>
+  </div>
+  <div className="flex flex-col">
+    <label className="text-base text-black">Number of Items</label>
+    <div className="flex items-center border rounded-lg p-3 bg-gray-50">
+      <Shirt className="w-5 h-5 text-gray-400 mr-2" />
+      <input
+        type="number"
+        placeholder="Number of Items"
+        value={numberofitems}
+        className="w-full bg-transparent outline-none"
+        onChange={(e) => setNumberOfItems(e.target.value)}
+      />
+    </div>
+  </div>
+  <div className="flex flex-col">
+    <label className="text-base text-black">Weight</label>
+    <div className="flex items-center border rounded-lg p-3 bg-gray-50">
+      <Scale className="w-5 h-5 text-gray-400 mr-2" />
+      <input
+        type="number"
+        placeholder="Kg"
+        value={weight}
+        className="w-full bg-transparent outline-none"
+        onChange={(e) => setWeight(e.target.value)}
+      />
+    </div>
+  </div>
+</div>
 
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                  <div className="flex items-center border rounded-lg p-3 bg-gray-50">
-                    <Package className="w-5 h-5 text-gray-400 mr-2" />
-                    <input
-                      type="number"
-                      placeholder="Bag Number"
-                      value={user.bagNumber}
-                      className="w-full bg-transparent outline-none"
-                    />
-                  </div>
-                  <div className="flex items-center border rounded-lg p-3 bg-gray-50">
-                    <User className="w-5 h-5 text-gray-400 mr-2" />
-                    <input
-                      type="text"
-                      placeholder="Name"
-                      value={user.name}
-                      className="w-full bg-transparent outline-none"
-                    />
-                  </div>
-                  <div className="flex items-center border rounded-lg p-3 bg-gray-50">
-                    <Building className="w-5 h-5 text-gray-400 mr-2" />
-                    <input
-                      type="text"
-                      placeholder="Room Number"
-                      value={user.roomNumber}
-                      className="w-full bg-transparent outline-none"
-                      readOnly
-                    />
-                  </div>
-                  <div className="flex items-center border rounded-lg p-3 bg-gray-50">
-                    <Home className="w-5 h-5 text-gray-400 mr-2" />
-                    <input
-                      type="text"
-                      placeholder="Building"
-                      value={user.buildingName}
-                      className="w-full bg-transparent outline-none"
-                    />
-                  </div>
-                  <div className="flex items-center border rounded-lg p-3 bg-gray-50">
-                    <Shirt className="w-5 h-5 text-gray-400 mr-2" />
-                    <input
-                      type="number"
-                      placeholder="Number of Items"
-                      value={numberofitems}
-                      className="w-full bg-transparent outline-none"
-                      onChange={(e) => setNumberOfItems(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex items-center border rounded-lg p-3 bg-gray-50">
-                    <Scale className="w-5 h-5 text-gray-400 mr-2" />
-                    <input
-                      type="number"
-                      placeholder="Kg"
-                      value={weight}
-                      className="w-full bg-transparent outline-none"
-                      onChange={(e) => setWeight(e.target.value)}
-
-                    />
-                  </div>
-                </div>
               </>
             )}
             {step === 2 && (
