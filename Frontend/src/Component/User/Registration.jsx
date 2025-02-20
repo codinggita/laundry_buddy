@@ -129,13 +129,15 @@ const handleSubmit = async (e) =>{
                 Phone Number
               </label>
               <input
-                type="tel"
-                id="phone"
-                placeholder="+1 (555) 000-0000"
-                className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => setNumber(e.target.value)}
+  type="tel"
+  id="phone"
+  placeholder="+91 939204XXX"
+  pattern="\+91\s[0-9]{10}"
+  className="block w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+  value={`+91 ${number}`}
+  onChange={(e) => setNumber(e.target.value.replace("+91 ", ""))}
+/>
 
-              />
             </div>
 
             {/* Room Number */}

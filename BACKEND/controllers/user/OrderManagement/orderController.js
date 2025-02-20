@@ -58,13 +58,13 @@ const getOrderSummary = async (req, res) => {
    const totalOrders = orders.length;
 
   //  Pending order
-    const pendingOrders = await Order.find({status:"Pending"})
+    const pendingOrders = await Order.find({userId, status:"Pending"})
 
   //  length of pending order
     const lengthOfPending = pendingOrders.length;
 
   //  Completed order
-    const completeOrders = await Order.find({status:"Completed"})
+    const completeOrders = await Order.find({userId ,status : "Completed"})
 
   //  length of completed order
     const lengthOfComplete = completeOrders.length;
