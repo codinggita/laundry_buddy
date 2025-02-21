@@ -140,7 +140,7 @@ const Login = () => {
         <div className="mt-4 text-center">
           <Link
             className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
-            to="/resetpassword"
+            to="/forgot-password"
           >
             Forgot your password?
           </Link>
