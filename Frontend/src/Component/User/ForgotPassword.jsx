@@ -1,21 +1,36 @@
 import React, { useState } from 'react';
+import axios from "axios"
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import icon from '../../assets/forgotpassword.png'
 
 function ResetPassword() {
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Email:', email);
-  };
+const handleForgotPassword = async(e)=>{
+  e.preventDefault();
+
+  try{
+
+    const response =await axios.post("http://localhost:3000/user/forgot-password",{email},
+        { headers: { "Content-Type": "application/json" } }
+    );
+    toast.info(response.data.message||"Email Send Successfully")
+
+  }catch(error){
+   toast.error(error.response?.data?.message || "Something went wrong");
+
+  }
+};
 
   return (
+    <>
+    <ToastContainer />
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-sm sm:max-w-md bg-white p-6 rounded-lg shadow-lg">
         {/* Icon */}
         <div className="flex justify-center mb-4">
-          <svg className="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 15v-1a4 4 0 00-4-4H8m0 0l-2-2m4 2l2 2m-2 2v1a4 4 0 004 4h8m-4 4h8a2 2 0 002-2v-2" />
-          </svg>
+          < img src={icon} className="h-12 w-12" />
         </div>
 
         {/* Title */}
@@ -25,7 +40,7 @@ function ResetPassword() {
         </p>
 
         {/* Form */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleForgotPassword}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
               Email address
@@ -58,6 +73,7 @@ function ResetPassword() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

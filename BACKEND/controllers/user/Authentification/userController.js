@@ -121,10 +121,10 @@ const forgotPassword =  async (req,res) => {
         {expiresIn: '1h'}
       );
       user.resetToken = resetToken;
-      user.resetPasswordExpires = Date.now() + 3600000  // Expire in 1 hr
+      user.resetPasswordExpires = Date.now() + 2*60*1000  // Expire in 2 min;
       await user.save();
 
-      const resetLink = `http://localhost:5174/forgot-password/${resetToken}`;
+      const resetLink = `http://localhost:5174/reset-password/${resetToken}`;
 
       const transporter = nodemailer.createTransport({
         service : "Gmail",
@@ -172,6 +172,10 @@ Please do not reply to this email. For any further assistance, contact our suppo
     res.status(500).json({message:"Server Error" , error:error.message})
   }
 }
+
+
+
+// Reset Password
 
 
 module.exports = { registerUser,loginUser,forgotPassword };
