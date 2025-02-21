@@ -19,7 +19,7 @@ function ResetPassword() {
         </div>
 
         {/* Title */}
-        <h2 className="text-xl sm:text-2xl font-bold text-center">Reset your password</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-center">Forgot password</h2>
         <p className="text-gray-600 text-sm sm:text-base text-center mb-6">
           Enter your email address and we'll send you a link to reset your password
         </p>
