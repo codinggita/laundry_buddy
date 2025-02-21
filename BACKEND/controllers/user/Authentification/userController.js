@@ -2,7 +2,8 @@
 const User = require('../../../models/user'); // Import the user schema
 const Worker =require('../../../models/Worker/workerModel')
 const bcrypt = require('bcryptjs');  // Required for comparing hashed passwords
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
 
 const registerUser = async (req, res) => {
   const { name, email, phoneNumber, buildingName, roomNumber,bagNumber, password, confirmPassword } = req.body;
@@ -55,6 +56,8 @@ const registerUser = async (req, res) => {
   }
 };
 
+
+// function for user login
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -98,5 +101,77 @@ const loginUser = async (req, res) => {
 
 
 
+// function for forgotpassword link
 
-module.exports = { registerUser,loginUser };
+const forgotPassword =  async (req,res) => {
+  try{
+
+      const{email} = req.body;
+      const user = await User.findOne({email});
+
+      if(!user){
+        return res.status(404).json({message:"User not Found"});
+      }
+
+      // create a jwt token for resetpassword
+
+      const resetToken = jwt.sign(
+        {UserId:user._id},
+        process.env.JWT_SECRET,
+        {expiresIn: '1h'}
+      );
+      user.resetToken = resetToken;
+      user.resetPasswordExpires = Date.now() + 3600000  // Expire in 1 hr
+      await user.save();
+
+      const resetLink = `http://localhost:5174/forgot-password/${resetToken}`;
+
+      const transporter = nodemailer.createTransport({
+        service : "Gmail",
+        auth:{
+          user:process.env.EMAIL_USER,
+          pass:process.env.EMAIL_PASSWORD,
+        },
+
+      });
+
+      const mailOption = {
+        from: process.env.EMAIL_USER,
+        to:user.email,
+        subject: "Password Reset Request",
+        text:`Hi ${user.name},
+
+We received a request to reset the password for your account associated with this email address.
+
+Please click on the link below to reset your password:
+
+${resetLink}
+
+If you did not request a password reset, please ignore this email.
+
+For security reasons, this link will expire in 1 hour.
+
+Best regards,
+Laundry_Buddy
+
+---
+
+Please do not reply to this email. For any further assistance, contact our support team at laundry@opreator.com
+            `,
+
+      };
+
+      //send mail
+
+      await transporter.sendMail(mailOption);
+
+      res.status(200).json({message:"Reset link sent to email",link:resetLink});
+     
+  }catch(error){
+
+    res.status(500).json({message:"Server Error" , error:error.message})
+  }
+}
+
+
+module.exports = { registerUser,loginUser,forgotPassword };
