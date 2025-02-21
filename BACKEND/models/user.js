@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const { type } = require('os');
 
 const userSchema = new Schema(
   {
@@ -42,6 +43,12 @@ const userSchema = new Schema(
     address: {
       type: String,
       default : " ",
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type:Date,
     },
   },
   {
