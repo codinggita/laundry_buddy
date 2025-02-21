@@ -21,7 +21,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/registration" element={<Registration />} />
-      <Route path="/resetpassword" element={<ResetPassword />} />
+      <Route path="/forgot-password" element={<ResetPassword />} />
     <Route index element={<div className='bg-softBlue min-h-screen'><RoleSelector /></div>} />
     <Route path="/user/userdashboard" element={<div className="bg-softBlue min-h-screen"> <Dashboard /></div>}  />    
     <Route path="/user/order-history" element={<div className="bg-historybg min-h-screen "> <Orderhistory /></div>}  />    
