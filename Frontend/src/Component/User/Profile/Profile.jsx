@@ -2,6 +2,7 @@ import Sidebar from "../Sidebar";
 import { Building2, Phone, Package } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -217,8 +218,10 @@ const[error,setError] = useState('');
             <label className="text-sm font-medium">New Password</label>
             <input type="password" className="w-full border rounded-lg p-2" />
           </div>
-          <div className="mt-4">
+          <div className="mt-4 flex gap-3">
             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">Update Password</button>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+              <Link to='/forgot-password'>Forgot Password</Link></button>
           </div>
         </div>
       </div>
