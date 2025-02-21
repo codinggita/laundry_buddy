@@ -116,12 +116,12 @@ const forgotPassword =  async (req,res) => {
       // create a jwt token for resetpassword
 
       const resetToken = jwt.sign(
-        {UserId:user._id},
+        {userId:user._id},
         process.env.JWT_SECRET,
         {expiresIn: '1h'}
       );
-      user.resetToken = resetToken;
-      user.resetPasswordExpires = Date.now() + 2*60*1000  // Expire in 2 min;
+      user.resetPasswordToken = resetToken;
+      user.resetPasswordExpires = Date.now() + 5*60*1000  // Expire in 5 min;
       await user.save();
 
       const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
@@ -149,7 +149,7 @@ ${resetLink}
 
 If you did not request a password reset, please ignore this email.
 
-For security reasons, this link will expire in 1 hour.
+For security reasons, this link will expire in 5 minutes.
 
 Best regards,
 Laundry_Buddy
@@ -165,7 +165,7 @@ Please do not reply to this email. For any further assistance, contact our suppo
 
       await transporter.sendMail(mailOption);
 
-      res.status(200).json({message:"Reset link sent to email",link:resetLink});
+      res.status(200).json({message:"Reset link sent to email",link:resetLink,token:resetToken});
      
   }catch(error){
 
@@ -177,5 +177,42 @@ Please do not reply to this email. For any further assistance, contact our suppo
 
 // Reset Password
 
+const resetPassword = async (req,res) => {
+  try{
+    const {token} = req.params
+    const {newPassword,confirmPassword} = req.body;
+    // console.log( typeof token)
+    if (newPassword !== confirmPassword){
+      return res.status(400).json({message:"Password does not Match"});
+    }
 
-module.exports = { registerUser,loginUser,forgotPassword };
+    //verify the token
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne({_id: decoded.userId, resetPasswordToken: token})
+ 
+
+
+if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < Date.now()) {
+  return res.status(400).json({ message: "Invalid or expired token" });
+    }
+     //update the userpassword
+     const salt = await bcrypt.genSalt(10);
+     user.password = await bcrypt.hash(newPassword,salt)
+
+     //clear the reset token and expiration
+     user.resetPasswordToken = undefined;
+     user.resetPasswordExpires = undefined 
+     await user.save();
+     
+     res.status(200).json({message:"Password Update Successfully"});
+
+
+
+  }catch(error){
+      res.status(500).json({message:"Server Error",error:error.message});
+  }
+}
+
+
+module.exports = { registerUser,loginUser,forgotPassword,resetPassword };
