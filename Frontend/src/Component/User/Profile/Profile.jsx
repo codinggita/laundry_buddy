@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import LoaderM from '../../../assets/loader/loader'
 
 export default function Profile() {
   const [user, setUser] = useState({});
@@ -13,11 +14,13 @@ export default function Profile() {
   const [bagNumber, setBagNumber] = useState("");
   const [buildingName, setBuildingName] = useState("");
   const [address, setAddress] = useState("");
+  const [ loader,setLoader] = useState(false);
 
 
   // Fetch the user details
   useEffect(() => {
     const fetchUser = async () => {
+      setLoader(true);
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get("http://localhost:3000/user/profile", {
@@ -37,6 +40,8 @@ export default function Profile() {
 
       } catch (error) {
         console.error(error.response?.data?.message || error.message);
+      }finally{
+        setLoader(false);
       }
     };
     fetchUser();
@@ -87,6 +92,34 @@ const[error,setError] = useState('');
     }
   };
 
+
+
+  // update password
+
+  const[currentPassword,setCurrentPassword]=useState('');
+  const[newPassword,setNewPassword]=useState('');
+  const[passerror,setPassError] = useState('');
+
+  const handleUpdatePassword = async(e)=>{
+    e.preventDefault();
+    setPassError('');
+
+    try{
+      const token = localStorage.getItem("token")
+      const response = await axios.put("http://localhost:3000/user/update-password",
+        {currentPassword:currentPassword,
+          newPassword},
+        {headers:{ Authorization : `Bearer ${token}` }}
+      );
+
+    toast.success("Password Update Successfully");
+    setNewPassword('');
+    setCurrentPassword('');
+    }catch(error){
+      setPassError(error.response?.data?.message || "Something went Wrong");
+    }
+  };
+
   return (
     <div className="md:flex min-h-screen">
       <ToastContainer />
@@ -96,7 +129,12 @@ const[error,setError] = useState('');
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 bg-gray-100 p-6">
+      {loader ? (
+         <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
+         <LoaderM />
+       </div>
+      ):(
+        <div className="flex-1 bg-gray-100 p-6">
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
           Profile Settings
         </h1>
@@ -209,22 +247,28 @@ const[error,setError] = useState('');
           <h2 className="text-lg font-semibold">Security</h2>
           <p className="text-sm text-gray-500 mb-4">Manage your password and security settings</p>
 
+          {passerror && (<div className="mb-4 p-3 bg-red-50 border-l-4 border-red-400 text-red-700 text-sm rounded">
+            <span className="font-medium">Error:</span> {passerror}
+          </div>)}
+
           <div className="space-y-2">
             <label className="text-sm font-medium">Current Password</label>
-            <input type="password" className="w-full border rounded-lg p-2" />
+            <input type="password" value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} className="w-full border rounded-lg p-2" />
           </div>
 
           <div className="space-y-2 mt-4">
             <label className="text-sm font-medium">New Password</label>
-            <input type="password" className="w-full border rounded-lg p-2" />
+            <input type="password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)}  className="w-full border rounded-lg p-2" />
           </div>
           <div className="mt-4 flex gap-3">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">Update Password</button>
+            <button onClick={handleUpdatePassword} className="bg-blue-600 text-white px-4 py-2 rounded-lg">Update Password</button>
             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
               <Link to='/forgot-password'>Forgot Password</Link></button>
           </div>
         </div>
       </div>
+      )}
+      
     </div>
   );
 }
