@@ -4,6 +4,7 @@ const Worker =require('../../../models/Worker/workerModel')
 const bcrypt = require('bcryptjs');  // Required for comparing hashed passwords
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
+const user = require('../../../models/user');
 
 const registerUser = async (req, res) => {
   const { name, email, phoneNumber, buildingName, roomNumber,bagNumber, password, confirmPassword } = req.body;
@@ -223,4 +224,42 @@ if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < Date.now(
 }
 
 
-module.exports = { registerUser,loginUser,forgotPassword,resetPassword };
+const updatePassword = async (req,res) =>{
+
+  try{
+
+    const {currentPassword,newPassword} = req.body;
+    const userId = req.user.userId;
+
+    //fetch user from DB
+    const user = await User.findById(userId);
+    // console.log("userId",{userId})
+    if(!user){
+      return res.status(404).json({message:"User not Found"});
+    }
+
+    //check the cuurent pass and db pass match 
+    const isMatch = await bcrypt.compare(currentPassword,user.password)
+    if(!isMatch){
+      return res.status(400).json({message:"  Current password is incorrect!"});
+    }
+
+    //check new pass and cuurent pass should unique
+    if(await bcrypt.compare(newPassword,user.password)){
+      return res.status(400).json({message:"😔 New password cannot be same as old password"});
+    }
+
+    //hash the new password
+
+    const salt =await bcrypt.genSalt(10);
+    user.password =  await bcrypt.hash(newPassword,salt);
+    await user.save();
+
+    return res.status(200).json({message:"🎉 Password Update Successfully"})
+
+  }catch(error){
+    return res.status(500).json({message:"Server error",error:error.message});
+  }
+}
+
+module.exports = { registerUser,loginUser,forgotPassword,resetPassword,updatePassword };
