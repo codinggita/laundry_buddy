@@ -18,7 +18,7 @@ const Login = () => {
     setSuccess(""); // Clear previous success messages
 
     try {
-      const response = await axios.post("http://localhost:3000/user/login", {
+      const response = await axios.post("https://laundry-buddy-yysq.onrender.com/user/login", {
         email,
         password,
       });
