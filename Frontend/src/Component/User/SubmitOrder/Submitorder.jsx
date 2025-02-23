@@ -54,7 +54,7 @@ export default function SubmitOrder() {
         const token = localStorage.getItem("token");
         // console.log("token",token);
 
-        const response = await axios.get("http://localhost:3000/user/profile", {
+        const response = await axios.get("https://laundry-buddy-yysq.onrender.com/user/profile", {
           headers: { Authorization: `Bearer ${token}` }
         })
 
@@ -98,7 +98,7 @@ export default function SubmitOrder() {
         weight: parseInt(weight),
       };
 
-      const response = await axios.post("http://localhost:3000/user/submit-order", orderData, {
+      const response = await axios.post("https://laundry-buddy-yysq.onrender.com/user/submit-order", orderData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("Order Submitted:", response.data)
