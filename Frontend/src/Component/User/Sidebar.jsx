@@ -5,7 +5,11 @@ import { RiHistoryFill } from "react-icons/ri";
 import { FaRegChartBar } from "react-icons/fa";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { CiWarning } from "react-icons/ci";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link,useNavigate } from "react-router-dom";
+import { LogOut } from 'lucide-react'
+import { toast,ToastContainer } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css";
+
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +22,21 @@ function Sidebar() {
     setIsOpen(false);
   };
 
+  // handle logout
+const navigate =useNavigate();
+  const logout =()=>{
+    localStorage.removeItem("token");
+    setIsOpen(false)
+    toast.success("Logout Successful");
+
+    setTimeout(()=>{
+      navigate('/login')
+    },2000)
+  }
+
   return (
+    <>
+    <ToastContainer />
     <div className="relative">
       {/* Hamburger Menu */}
       <button
@@ -51,10 +69,10 @@ function Sidebar() {
       )}
 
       {/* Sidebar */}
-      <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform z-20 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 md:translate-x-0`}
+      <div className="flex flex-col h-full">     
+         <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform z-20 ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-300 md:translate-x-0`}
       >
         {/* Header */}
         <div className="p-6 px-8">
@@ -67,10 +85,9 @@ function Sidebar() {
             <NavLink
               to="/user/userdashboard"
               className={({ isActive }) =>
-                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
-                  isActive
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-gray-700 hover:bg-gray-100"
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${isActive
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-700 hover:bg-gray-100"
                 }`
               }
             >
@@ -80,13 +97,12 @@ function Sidebar() {
               <span>Dashboard</span>
             </NavLink>
 
-              <NavLink
+            <NavLink
               to="/user/submit-order"
               className={({ isActive }) =>
-                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
-                  isActive
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-gray-700 hover:bg-gray-100"
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${isActive
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-700 hover:bg-gray-100"
                 }`
               }
             >
@@ -96,13 +112,12 @@ function Sidebar() {
               <span>Submit Order</span>
             </NavLink>
 
-             <NavLink
+            <NavLink
               to="/user/order-history"
               className={({ isActive }) =>
-                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
-                  isActive
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-gray-700 hover:bg-gray-100"
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${isActive
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-700 hover:bg-gray-100"
                 }`
               }
             >
@@ -115,10 +130,9 @@ function Sidebar() {
             <NavLink
               to="/user/daily-rush"
               className={({ isActive }) =>
-                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
-                  isActive
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-gray-700 hover:bg-gray-100"
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${isActive
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-700 hover:bg-gray-100"
                 }`
               }
             >
@@ -131,38 +145,46 @@ function Sidebar() {
             <NavLink
               to="/user/profile"
               className={({ isActive }) =>
-                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
-                  isActive
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-gray-700 hover:bg-gray-100"
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${isActive
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-700 hover:bg-gray-100"
                 }`
               }
             >
               <span className="text-xl mr-4">
                 <RiAccountCircleLine />
               </span>
-              
+
               <span>Profile</span>
             </NavLink>
 
             <NavLink
               to="/user/complaint"
               className={({ isActive }) =>
-                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${
-                  isActive
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-gray-700 hover:bg-gray-100"
+                `flex items-center p-3 px-8 rounded-lg cursor-pointer ${isActive
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-700 hover:bg-gray-100"
                 }`
               }
             >
               <span className="text-xl mr-4">
-              <CiWarning />              </span>
+                <CiWarning />              </span>
               <span>Complaint</span>
             </NavLink>
           </ul>
         </nav>
+        <div className="mt-auto p-4 border-t border-gray-200">
+          <button
+            className="flex items-center w-full px-4 py-3 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+          onClick={logout}>
+            <LogOut className="w-5 h-5 mr-3" />
+            Logout
+          </button>
+        </div>
+      </div>
       </div>
     </div>
+    </>
   );
 }
 
