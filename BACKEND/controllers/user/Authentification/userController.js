@@ -125,7 +125,7 @@ const forgotPassword =  async (req,res) => {
       user.resetPasswordExpires = Date.now() + 5*60*1000  // Expire in 5 min;
       await user.save();
 
-      const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+      const resetLink = `https://laundry-buddy-frontend.onrender.com/reset-password/${resetToken}`;
 
       const transporter = nodemailer.createTransport({
         service : "Gmail",

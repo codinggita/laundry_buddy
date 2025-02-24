@@ -72,7 +72,9 @@ const[error,setError] = useState('');
       // Handle success response
       console.log("Profile updated successfully:", response.data);
 
-      toast.success("Profile update successfully!")
+      toast.success("Profile update successfully!",{
+        autoClose : 3000
+      })
 
       // Fetch updated user details
       setUser(response.data.user);
@@ -112,7 +114,9 @@ const[error,setError] = useState('');
         {headers:{ Authorization : `Bearer ${token}` }}
       );
 
-    toast.success("Password Update Successfully");
+    toast.success("Password Update Successfully",{
+      autoClose:3000
+    });
     setNewPassword('');
     setCurrentPassword('');
     }catch(error){
