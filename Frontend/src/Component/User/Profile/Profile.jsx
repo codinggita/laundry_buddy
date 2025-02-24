@@ -3,7 +3,7 @@ import { Building2, Phone, Package } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import LoaderM from '../../../assets/loader/loader'
 
@@ -126,7 +126,7 @@ const[error,setError] = useState('');
 
   return (
     <div className="md:flex min-h-screen">
-      <ToastContainer />
+     
       {/* Sidebar */}
       <div className="md:block w-80">
         <Sidebar />
