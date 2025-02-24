@@ -10,7 +10,7 @@ import ResetPassword from './Component/User/ResetPassword.jsx';
 import WorkerDashbaord from './Component/Worker/workerDashbaord.jsx';
 import Submitorder from './Component/User/SubmitOrder/Submitorder.jsx';
 import Profile from './Component/User/Profile/Profile.jsx';
-import OrderConfirmation from './Component/User/SubmitOrder/orderConfirmation.jsx';
+import OrderConfirmation from './Component/User/SubmitOrder/OrderConfirmation.jsx';
 import Dailyrush from './Component/User/Daily-Rush/Dailyrush.jsx';
 import Complaint from './Component/User/Complaint-Form/ComplaintForm.jsx';
 
