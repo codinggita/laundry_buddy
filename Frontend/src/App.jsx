@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Link, BrowserRouter } from 'react-router-dom';
 import './App.css'
-import RoleSelector from './Component/Roleselector/RoleSelector'
-import Dashboard from './Component/User/Dashboard';
+import RoleSelector from './Component/Roleselector/Roleselector.jsx'
+import Dashboard from './Component/User/Dashboard.jsx';
 import Orderhistory from './Component/User/OrderHistory/Orderhistory.jsx';
-import Login from './Component/User/Login';
+import Login from './Component/User/Login.jsx';
 import Registration from './Component/User/Registration.jsx';
-import ForgotPassword from './Component/User/ForgotPassword';
+import ForgotPassword from './Component/User/ForgotPassword.jsx';
 import ResetPassword from './Component/User/ResetPassword.jsx';
-import WorkerDashbaord from './Component/Worker/workerDashbaord';
+import WorkerDashbaord from './Component/Worker/workerDashbaord.jsx';
 import Submitorder from './Component/User/SubmitOrder/Submitorder.jsx';
 import Profile from './Component/User/Profile/Profile.jsx';
 import OrderConfirmation from './Component/User/SubmitOrder/orderConfirmation.jsx';
