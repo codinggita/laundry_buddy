@@ -15,12 +15,14 @@ const [password,setPassword]=useState('');
 const [confirmpassword,setconfirmPassword]=useState('');
 const [error,setError]=useState('');
 const [success,setSuccess]=useState('');
+const [loading,setLoading]=useState(false);
 
 const navigate=useNavigate();
 const handleSubmit = async (e) =>{
   e.preventDefault();
   setError('');
   setSuccess('');
+  setLoading(true);
 
   if (password !== confirmpassword) {
     setError( 'Passwords do not match.' );
@@ -59,6 +61,8 @@ const handleSubmit = async (e) =>{
     } else {
       setError("An error occurred. Please try again."); // Generic error message
     }
+  }finally{
+    setLoading(false)
   }
 }
 
@@ -217,11 +221,14 @@ const handleSubmit = async (e) =>{
 
           {/* Submit Button */}
           <button
-            type="submit"
-            className="w-full py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300"
-          >
-            Create Account
-          </button>
+      type="submit"
+      className={`w-full py-2 text-white rounded-lg transition-all ${
+        loading ? 'bg-blue-300' : 'bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300'
+      }`}
+      disabled={loading}
+    >
+      {loading ? 'Creating Account...' : 'Create Account'}
+    </button>
         </form>
 
         {/* Back to Login */}
