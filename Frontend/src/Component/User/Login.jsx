@@ -9,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State to store error messages
   const [success, setSuccess] = useState(""); // State to store success messages
+  const [loading, setLoading] = useState(false); // State to store success messages
 
   const navigate = useNavigate();
 
@@ -16,6 +17,7 @@ const Login = () => {
     e.preventDefault();
     setError(""); // Clear previous errors
     setSuccess(""); // Clear previous success messages
+    setLoading(true)
 
     try {
       const response = await axios.post("https://laundry-buddy-yysq.onrender.com/user/login", {
@@ -56,6 +58,8 @@ const Login = () => {
       } else {
         setError("An error occurred. Please try again."); // Generic error message
       }
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -129,11 +133,14 @@ const Login = () => {
 
           {/* Sign In Button */}
           <button
-            type="submit"
-            className="w-full py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
-          >
-            Sign in
-          </button>
+      type="submit"
+      className={`w-full py-2 text-white rounded-lg transition-all ${
+        loading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+      }`}
+      disabled={loading}
+    >
+      {loading ? 'Signing in...' : 'Sign in'}
+    </button>
         </form>
 
         {/* Forgot Password Link */}

@@ -75,6 +75,7 @@ const getOrderSummary = async (req, res) => {
     weight: order.weight,
     status: order.status,
     createdAt: new Date(order.createdAt).toLocaleString('en-US', {
+      timeZone: 'Asia/Kolkata',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
