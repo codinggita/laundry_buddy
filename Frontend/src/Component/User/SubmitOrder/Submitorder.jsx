@@ -39,6 +39,7 @@ export default function SubmitOrder() {
 
   // to send data for orderconfirmation component
     const {weight,setWeight,numberofitems,setNumberOfItems}= useContext(OrderContext)
+    const price = 60*weight
 
 
   // To get the user deatails for submit form 
@@ -348,11 +349,11 @@ export default function SubmitOrder() {
                     <div className="border-t pt-4 space-y-2">
                       <div className="flex justify-between text-gray-600">
                         <span>Subtotal</span>
-                        <span>$00.00</span>
+                        <span>₹{price}</span>
                       </div>
                       <div className="flex justify-between text-blue-600 font-medium">
                         <span>Total</span>
-                        <span>$00.00</span>
+                        <span>₹{price}</span>
                       </div>
                     </div>
 
@@ -478,7 +479,7 @@ export default function SubmitOrder() {
                           Including all service fees
                         </p>
                       </div>
-                      <p className="text-2xl font-bold text-blue-600">$1.3</p>
+                      <p className="text-2xl font-bold text-blue-600">₹{price}</p>
                     </div>
                   </>
                 )}
