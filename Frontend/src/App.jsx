@@ -13,6 +13,7 @@ import Profile from './Component/User/Profile/Profile.jsx';
 import OrderConfirmation from './Component/User/SubmitOrder/OrderConfirmation.jsx';
 import Dailyrush from './Component/User/Daily-Rush/Dailyrush.jsx';
 import Complaint from './Component/User/Complaint-Form/ComplaintForm.jsx';
+import ComplaintFormSuccess from './Component/User/Complaint-Form/ComplaintFormSuccess.jsx';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
     <Route path="/user/daily-rush" element={<div className=" bg-gray-50 min-h-screen "> <Dailyrush /></div>}  />    
     <Route path="/user/profile" element={<div className="bg-softBlue min-h-screen "> <Profile /></div>}  />    
     <Route path="/user/complaint" element={<div className="bg-softBlue min-h-screen "> <Complaint /></div>}  />    
+    <Route path="/user/complaint/success" element={<div className="bg-softBlue min-h-screen "> <ComplaintFormSuccess /></div>}  />    
     <Route path="/workerdashboard" element={ <WorkerDashbaord /> } />  
     </Routes>
     </BrowserRouter>
