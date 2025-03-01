@@ -20,7 +20,7 @@ const Navbar = () => {
             <span>Dashboard</span>
           </NavLink>
           <NavLink
-            to="/orders"
+            to="/worker/orders"
             className={({ isActive }) =>
               isActive
                 ? "flex items-center text-blue-600 font-medium text-sm sm:text-base border-b-2 border-blue-600"
