@@ -7,7 +7,7 @@ import Login from './Component/User/Login.jsx';
 import Registration from './Component/User/Registration.jsx';
 import ForgotPassword from './Component/User/ForgotPassword.jsx';
 import ResetPassword from './Component/User/ResetPassword.jsx';
-import WorkerDashbaord from './Component/Worker/workerDashbaord.jsx';
+import WorkerDashbaord from './Component/Worker/Dashboard/workerDashbaord.jsx';
 import Submitorder from './Component/User/SubmitOrder/Submitorder.jsx';
 import Profile from './Component/User/Profile/Profile.jsx';
 import OrderConfirmation from './Component/User/SubmitOrder/OrderConfirmation.jsx';
@@ -34,7 +34,10 @@ function App() {
     <Route path="/user/daily-rush" element={<div className=" bg-gray-50 min-h-screen "> <Dailyrush /></div>}  />    
     <Route path="/user/profile" element={<div className="bg-softBlue min-h-screen "> <Profile /></div>}  />    
     <Route path="/user/complaint" element={<div className="bg-softBlue min-h-screen "> <Complaint /></div>}  />    
-    <Route path="/user/complaint/success" element={<div className="bg-softBlue min-h-screen "> <ComplaintFormSuccess /></div>}  />    
+    <Route path="/user/complaint/success" element={<div className="bg-softBlue min-h-screen "> <ComplaintFormSuccess /></div>}  />   
+
+
+    {/* worker starts  */}
     <Route path="/workerdashboard" element={ <WorkerDashbaord /> } />  
     </Routes>
     </BrowserRouter>
