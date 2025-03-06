@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar/Navbar';
+import LoaderM from '../../../assets/loader/loader';
+import { Link } from 'react-router-dom';
 import {
   ClipboardList,
   CheckCircle,
@@ -13,8 +15,52 @@ import {
   ChevronRight,
   Package
 } from 'lucide-react';
+import axios from 'axios';
 
 function WorkerDashbaord() {
+
+  const[totalOrders,setTotalOrders]=useState(0);
+  const[pendingOrders,setPendingOrders]=useState(0);
+  const[completeOrders,setCompleteOrders]=useState(0);
+  const[complitionRate,setComplitionRate]=useState(0);
+  const[loading,setLoading]=useState(false)
+
+ 
+
+
+useEffect(()=>{
+  const fetchDetails = async ()  =>{
+    setLoading(true);
+    try{
+
+      const response = await axios.get("https://laundry-buddy-yysq.onrender.com/worker/getallorderdetails")
+      setCompleteOrders(response.data.completedOrders);
+      setPendingOrders(response.data.pendingOrders);
+      setTotalOrders(response.data.totalOrders);
+    }catch(error){
+      console.error(error.response?.data?.message || error.message);
+
+    }finally{
+      setLoading(false)
+    }
+  }
+  fetchDetails();
+},[completeOrders,pendingOrders,totalOrders]);
+
+useEffect(()=>{
+  if(totalOrders>0){
+    setComplitionRate((completeOrders/totalOrders)*100)
+  }
+},[totalOrders,completeOrders])
+
+
+ if (loading) {
+    return  <div className="fixed inset-0 flex items-center justify-center bg-gray-100 ">     
+                        <LoaderM />
+               </div>;
+  }
+
+
   return (
     <>
       <div >
@@ -59,7 +105,7 @@ function WorkerDashbaord() {
              <Package className="h-5 w-5 text-blue-500" />
               </div>
 
-              <p className="text-4xl font-bold ">4</p>
+              <p className="text-4xl font-bold ">{totalOrders}</p>
             </div>
 
             {/* Completed Orders */}
@@ -68,7 +114,7 @@ function WorkerDashbaord() {
                 <p className="text-gray-500 mb-2">Completed Orders</p>
                 <CheckCircle className="h-5 w-5 text-green-500" />
               </div>
-              <p className="text-4xl font-bold">2</p>
+              <p className="text-4xl font-bold">{completeOrders}</p>
             </div>
 
             {/* Pending Orders */}
@@ -77,7 +123,7 @@ function WorkerDashbaord() {
                 <p className="text-gray-500 mb-2">Pending Orders</p>
                 <Clock className="h-5 w-5 text-yellow-500" />
               </div>
-              <p className="text-4xl font-bold">2</p>
+              <p className="text-4xl font-bold">{pendingOrders}</p>
             </div>
 
             {/* Completion Rate */}
@@ -87,7 +133,7 @@ function WorkerDashbaord() {
                 <TrendingUp className="h-5 w-5 text-purple-500" />
               </div>
               <p className="text-4xl font-bold">
-                50 <span className="text-gray-400 text-2xl">%</span>
+              {complitionRate.toFixed(2)} <span className="text-gray-400 text-2xl">%</span>
               </p>
             </div>
           </div>
@@ -119,10 +165,10 @@ function WorkerDashbaord() {
                 <Clock className="h-5 w-5 text-gray-500 mr-2" />
                 <h2 className="text-lg font-medium">Recent Activity</h2>
               </div>
-              <a href="#" className="text-blue-500 text-sm flex items-center">
+              <Link to='/worker/orders' className="text-blue-500 text-sm flex items-center">
                 View All
                 <ChevronRight className="h-4 w-4 ml-1" />
-              </a>
+                </Link>
             </div>
 
             <div className="space-y-4">
@@ -134,11 +180,11 @@ function WorkerDashbaord() {
               </div>
 
               {/* Activity Item 2 */}
-              <div className="border-b border-gray-100 pb-4">
+              {/* <div className="border-b border-gray-100 pb-4">
                 <h3 className="font-medium">Stock Updated</h3>
                 <p className="text-gray-600">Premium Detergent stock reduced by 50kg</p>
                 <p className="text-gray-400 text-sm mt-1">15 minutes ago</p>
-              </div>
+              </div> */}
 
               {/* Activity Item 3 */}
               <div>
