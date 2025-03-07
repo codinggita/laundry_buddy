@@ -18,6 +18,7 @@ const getWorkerOrders = async (req, res) => {
         // Check if userId is populated and not null
         const user = order.userId || {};
         return {
+          OrderId: order._id,
           userName: user.name || 'N/A', 
           bagNumber: user.bagNumber,
           numberOfItems: order.numberOfClothes,
