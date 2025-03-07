@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import Navbar from '../Navbar/Navbar';
 import LoaderM from '../../../assets/loader/loader';
 import { Link } from 'react-router-dom';
+// import { OrderContext } from '../../User/SubmitOrder/OrderContext';
 import {
   ClipboardList,
   CheckCircle,
@@ -28,8 +29,7 @@ function WorkerDashbaord() {
  
 
 
-useEffect(()=>{
-  const fetchDetails = async ()  =>{
+    const fetchDetails = async ()  =>{
     setLoading(true);
     try{
 
@@ -44,8 +44,10 @@ useEffect(()=>{
       setLoading(false)
     }
   }
-  fetchDetails();
-},[completeOrders,pendingOrders,totalOrders]);
+  
+  useEffect(() => {
+    fetchDetails();
+}, []);
 
 useEffect(()=>{
   if(totalOrders>0){

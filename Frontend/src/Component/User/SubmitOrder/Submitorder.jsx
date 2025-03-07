@@ -40,11 +40,7 @@ export default function SubmitOrder() {
   // to send data for orderconfirmation component
     const {weight,setWeight,numberofitems,setNumberOfItems}= useContext(OrderContext)
     const price = 60*weight
-
-
-  // To get the user deatails for submit form 
-
-  const [user, setUser] = useState({});
+      const [user, setUser] = useState({});
 
   useEffect(() => {
     const fetchUserDeatils = async () => {

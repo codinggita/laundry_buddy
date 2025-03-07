@@ -3,6 +3,7 @@ import axios from 'axios';
 import { CheckCircle, Bell, ArrowUpDown, Check, Download, Search } from 'lucide-react';
 import Navbar from '../Navbar/Navbar';
 import LoaderM from '../../../assets/loader/loader';
+import NotifyAndComplete from './NotifyAndComplete';
 
 function OrderManagement() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,6 +11,8 @@ function OrderManagement() {
   const [pendingOrders, setPendingOrders] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModelOpen,setIsModelOpen]=useState(false);
+  const [selectedOrder,setSelectedOrder]=useState(null)
 
   const fetchOrders = async () => {
     try {
@@ -115,6 +118,19 @@ function OrderManagement() {
                           </span>
                         </td>
                         <td className="px-6 py-4 text-gray-500">{order.date}<br />{order.time}</td>
+                        <td className="px-6 py-4">
+                          <button
+                          onClick={()=>{
+                            setSelectedOrder(order);
+                            setIsModelOpen(true);
+                          }} 
+                          
+                          
+                          className="bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-md text-sm flex items-center">
+                            <CheckCircle className="h-4 w-4 mr-1" />
+                            Complete
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -124,6 +140,12 @@ function OrderManagement() {
               )}
             </div>
           </div>
+
+          <NotifyAndComplete
+          isOpen={isModelOpen}
+          onClose={()=> setIsModelOpen(false)}
+          order={selectedOrder}
+          />
 
           {/* Completed Orders Section */}
           <div className="bg-white rounded-lg shadow-sm mb-8 overflow-hidden">
@@ -149,10 +171,9 @@ function OrderManagement() {
                       <th className="px-6 py-3 font-medium">Bag Number</th>
                       <th className="px-6 py-3 font-medium">Customer</th>
                       <th className="px-6 py-3 font-medium">Number of Items</th>
-                      <th className="px-6 py-3 font-medium">Status</th>
                       <th className="px-6 py-3 font-medium">Date</th>
                       <th className="px-6 py-3 font-medium">Time</th>
-                      <th className="px-6 py-3 font-medium">Actions</th>
+                      <th className="px-6 py-3 font-medium">Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -161,19 +182,19 @@ function OrderManagement() {
                         <td className="px-6 py-4 text-blue-600 font-medium">{order.bagNumber}</td>
                         <td className="px-6 py-4">{order.userName}</td>
                         <td className="px-6 py-4">{order.numberOfItems}</td>
+                        <td className="px-6 py-4 text-gray-500">{order.date}</td>
+                        <td className="px-6 py-4 text-gray-500">{order.time}</td>
                         <td className="px-6 py-4">
                           <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded-full">
                             {order.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-gray-500">{order.date}</td>
-                        <td className="px-6 py-4 text-gray-500">{order.time}</td>
-                        <td className="px-6 py-4">
+                        {/* <td className="px-6 py-4">
                           <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm flex items-center">
                             <Bell className="h-4 w-4 mr-1" />
                             Notify
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     ))}
                   </tbody>
