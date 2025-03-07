@@ -1,13 +1,23 @@
 // NotifyAndComplete.jsx
 import React from "react";
 import { CheckCircle } from "lucide-react";
+import axios from 'axios'
 
-function NotifyAndComplete({ isOpen, onClose, order }) {
+function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
   if (!isOpen) return null; // Only render if isOpen is true
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Order completed:", order);
+
+    try{
+      const response = await axios.patch(`http://localhost:3000/worker/update-order-status/${order?.OrderId}`)
+      console.log("Order completed:", response.data);
+      fetchOrders();
+    }catch(error){
+     
+        console.error("Error updating order status:", error.response ? error.response.data : error.message);
+    }
+
     onClose(); // Close after submission
   };
 
