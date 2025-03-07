@@ -145,6 +145,7 @@ function OrderManagement() {
           isOpen={isModelOpen}
           onClose={()=> setIsModelOpen(false)}
           order={selectedOrder}
+          fetchOrders={fetchOrders} //pass the function to notification and complete component
           />
 
           {/* Completed Orders Section */}
