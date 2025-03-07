@@ -18,6 +18,7 @@ const getWorkerOrders = async (req, res) => {
         // Check if userId is populated and not null
         const user = order.userId || {};
         return {
+          OrderId: order._id,
           userName: user.name || 'N/A', 
           bagNumber: user.bagNumber,
           numberOfItems: order.numberOfClothes,
@@ -32,7 +33,6 @@ const getWorkerOrders = async (req, res) => {
             timeZone: 'Asia/Kolkata',
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit',
             hour12: true
           })
         };
