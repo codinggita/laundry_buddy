@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const Order = require("../../../models/userOrder");
-const User = require("../../../models/user")
+const User = require("../../../models/user");
+const twilio =require('twilio');
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = new twilio(accountSid, authToken);
 
 const getWorkerOrders = async (req, res) => {
     try {
@@ -20,6 +25,7 @@ const getWorkerOrders = async (req, res) => {
         return {
           OrderId: order._id,
           userName: user.name || 'N/A', 
+          phoneNumber: user.phoneNumber,
           bagNumber: user.bagNumber,
           numberOfItems: order.numberOfClothes,
           status: order.status,
@@ -58,6 +64,7 @@ const getWorkerOrders = async (req, res) => {
 
    const updateOrderStatus = async (req, res) => {
     const { orderId } = req.params;
+    const { phoneNumber, message } = req.body;
   
     try {
       const order = await Order.findById(orderId);
@@ -67,10 +74,19 @@ const getWorkerOrders = async (req, res) => {
       }
   
       order.status = 'Completed';
+      order.smsSent = true;
       await order.save();
+
+      await client.messages.create({
+        body: message,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: phoneNumber,
+      });
   
-      res.status(200).json({ message: 'Order status updated to Completed', order });
+      res.status(200).json({ message: 'Order status updated to Completed and Notification Send', order });
     } catch (error) {
+      
+        console.error('Error updating order status and sending notification:', error); // Log the error details
       res.status(500).json({ message: 'An error occurred while updating the order status', error });
     }
   };
