@@ -27,6 +27,7 @@ const orderSchema = new Schema(
       enum: ['Pending', 'In Progress', 'Completed', 'Delivered'],
       default: 'Pending',
     },
+    smsSent: { type: Boolean, default: false },
   },
   {
     collection: 'orders',
