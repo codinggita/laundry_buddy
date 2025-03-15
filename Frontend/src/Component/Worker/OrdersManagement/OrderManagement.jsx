@@ -5,6 +5,8 @@ import Navbar from '../Navbar/Navbar';
 import LoaderM from '../../../assets/loader/loader';
 import NotifyAndComplete from './NotifyAndComplete';
 
+import { io } from 'socket.io-client';
+
 function OrderManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [orders, setOrders] = useState([]);
@@ -13,11 +15,13 @@ function OrderManagement() {
   const [loading, setLoading] = useState(true);
   const [isModelOpen,setIsModelOpen]=useState(false);
   const [selectedOrder,setSelectedOrder]=useState(null)
+  const [socket, setSocket] = useState(null);
 
   const fetchOrders = async () => {
     try {
       const response = await axios.get('https://laundry-buddy-yysq.onrender.com/worker/getallorderdetails');
       const { orders, pendingOrders, completedOrders } = response.data;
+      console.log(orders) 
       setOrders(orders || []);
       setPendingOrders(orders.filter(order => order.status === "Pending") || []);
       setCompletedOrders(orders.filter(order => order.status === "Completed") || []);
@@ -33,13 +37,34 @@ function OrderManagement() {
     fetchOrders();
   },[])
 
+      // Handling socket.io connection 
+      useEffect(() => {
+        const socketConnection = io('http://localhost:8080'); // Create the socket inside useEffect
+        setSocket(socketConnection);
+    
+        socketConnection.on('connect', () => {
+          console.log('Connected to server');
+        });
+    
+        socketConnection.on('server-message', (message) => {
+          fetchOrders()
+        });
+    
+        socketConnection.on('disconnect', () => {
+          console.log('Disconnected from server');
+        });
+    
+        return () => {
+          socketConnection.disconnect();
+        };
+      }, []);
   
 
 
 
   // Filter orders according to bag number
   const filterOrders = orders.filter(order =>
-    order.bagNumber.toLowerCase().includes(searchQuery.toLowerCase())
+    order?.bagNumber?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const filterPendingOrders = filterOrders.filter(order => order.status === "Pending");
@@ -50,6 +75,9 @@ function OrderManagement() {
                         <LoaderM />
                </div>;
   }
+
+
+
 
   return (
     <>
