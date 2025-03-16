@@ -21,11 +21,9 @@ function OrderManagement() {
     try {
       const response = await axios.get('https://laundry-buddy-yysq.onrender.com/worker/getallorderdetails');
       const { orders, pendingOrders, completedOrders } = response.data;
-<<<<<<< HEAD
+
       console.log("Response",response.data.orders)
-=======
-      console.log(orders) 
->>>>>>> 284cd9bcd6cc97515c060d1d7e129798327e3d50
+
       setOrders(orders || []);
       setPendingOrders(orders.filter(order => order.status === "Pending") || []);
       setCompletedOrders(orders.filter(order => order.status === "Completed") || []);
