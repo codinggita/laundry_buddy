@@ -39,7 +39,7 @@ function OrderManagement() {
 
       // Handling socket.io connection 
       useEffect(() => {
-        const socketConnection = io('http://localhost:8080'); // Create the socket inside useEffect
+        const socketConnection = io('https://laundry-buddy-yysq.onrender.com'); // Create the socket inside useEffect
         setSocket(socketConnection);
     
         socketConnection.on('connect', () => {
