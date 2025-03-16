@@ -21,12 +21,14 @@ function OrderManagement() {
     try {
       const response = await axios.get('https://laundry-buddy-yysq.onrender.com/worker/getallorderdetails');
       const { orders, pendingOrders, completedOrders } = response.data;
-      console.log(orders) 
+
+      console.log("Response",response.data.orders)
+
       setOrders(orders || []);
       setPendingOrders(orders.filter(order => order.status === "Pending") || []);
       setCompletedOrders(orders.filter(order => order.status === "Completed") || []);
       setLoading(false);
-      // console.log("Orders",response)
+      console.log("Orders",response)
     } catch (error) {
       console.error('Failed to fetch orders:', error);
       setLoading(false);
@@ -39,7 +41,7 @@ function OrderManagement() {
 
       // Handling socket.io connection 
       useEffect(() => {
-        const socketConnection = io('http://localhost:8080'); // Create the socket inside useEffect
+        const socketConnection = io('https://laundry-buddy-yysq.onrender.com'); // Create the socket inside useEffect
         setSocket(socketConnection);
     
         socketConnection.on('connect', () => {

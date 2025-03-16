@@ -10,7 +10,21 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
     e.preventDefault();
 
     try{
-      const response = await axios.patch(`http://localhost:3000/worker/update-order-status/${order?.OrderId}`)
+<<<<<<< HEAD
+      const response = await axios.patch(`https://laundry-buddy-yysq.onrender.com/worker/update-order-status/${order?.OrderId}`,
+        {
+          phoneNumber: `+91${order?.phoneNumber}`,
+          message:`Order #${order?.bagNumber || "N/A"} has been completed and ready for pickup.`
+
+         },{
+          headers: {
+            'Content-Type': 'application/json', // Set the Content-Type header
+          },
+        }
+      )
+=======
+      const response = await axios.patch(`https://laundry-buddy-yysq.onrender.com/worker/update-order-status/${order?.OrderId}`)
+>>>>>>> 284cd9bcd6cc97515c060d1d7e129798327e3d50
       console.log("Order completed:", response.data);
       fetchOrders();
     }catch(error){

@@ -2,6 +2,7 @@ import React, { useEffect, useState,useContext } from 'react';
 import Navbar from '../Navbar/Navbar';
 import LoaderM from '../../../assets/loader/loader';
 import { Link } from 'react-router-dom';
+import { formatDistanceToNow } from 'date-fns'
 // import { OrderContext } from '../../User/SubmitOrder/OrderContext';
 import {
   ClipboardList,
@@ -18,13 +19,33 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
+const getMostRecentOrderByStatus  = (orders,status) => {
+  if (!orders || orders.length === 0) {
+    return null;
+  }
+
+  // Filter orders by date and time in descending order and get the first order
+  const filteredOrders  = orders
+  .filter(order => order.status === status)
+  .sort((a, b) => {
+    const dateA = new Date(`${a.date} ${a.time}`);
+    const dateB = new Date(`${b.date} ${b.time}`);
+    return dateB - dateA;
+  });
+
+  return filteredOrders.length > 0 ? filteredOrders[0] : null;};
+
 function WorkerDashbaord() {
 
+  const[orders,setOrders]=useState([]);
   const[totalOrders,setTotalOrders]=useState(0);
   const[pendingOrders,setPendingOrders]=useState(0);
-  const[completeOrders,setCompleteOrders]=useState(0);
+  const[completeOrders,setCompleteOrders]=useState(0);  
   const[complitionRate,setComplitionRate]=useState(0);
+  const[mostRecentNewOrder,setMostRecentNewOrder]=useState(null);
+  const [mostRecentCompletedOrder, setMostRecentCompletedOrder] = useState(null);
   const[loading,setLoading]=useState(false)
+  const[time,setTime]=useState("");
 
  
 
@@ -34,9 +55,17 @@ function WorkerDashbaord() {
     try{
 
       const response = await axios.get("https://laundry-buddy-yysq.onrender.com/worker/getallorderdetails")
+      setOrders(response.data.orders || [])
       setCompleteOrders(response.data.completedOrders);
       setPendingOrders(response.data.pendingOrders);
       setTotalOrders(response.data.totalOrders);
+
+      const recentNewOrder = getMostRecentOrderByStatus(response.data.orders)
+      const recentCompletedOrder = getMostRecentOrderByStatus(response.data.orders, 'Completed');
+      setMostRecentNewOrder(recentNewOrder.bagNumber)
+      setMostRecentCompletedOrder(recentCompletedOrder.bagNumber)
+      setTime(recentNewOrder)
+      console.log("new order",recentNewOrder)
     }catch(error){
       console.error(error.response?.data?.message || error.message);
 
@@ -177,7 +206,7 @@ useEffect(()=>{
               {/* Activity Item 1 */}
               <div className="border-b border-gray-100 pb-4">
                 <h3 className="font-medium">Order Completed</h3>
-                <p className="text-gray-600">Order #ORD-001 was marked as completed</p>
+                <p className="text-gray-600">Order #ORD-{mostRecentCompletedOrder} was marked as completed</p>
                 <p className="text-gray-400 text-sm mt-1">5 minutes ago</p>
               </div>
 
@@ -191,8 +220,8 @@ useEffect(()=>{
               {/* Activity Item 3 */}
               <div>
                 <h3 className="font-medium">New Order</h3>
-                <p className="text-gray-600">Order #ORD-002 was created</p>
-                <p className="text-gray-400 text-sm mt-1">1 hour ago</p>
+                <p className="text-gray-600">Order #ORD-{mostRecentNewOrder || "#"} was created</p>
+                <p className="text-gray-400 text-sm mt-1">{time}</p>
               </div>
             </div>
           </div>
