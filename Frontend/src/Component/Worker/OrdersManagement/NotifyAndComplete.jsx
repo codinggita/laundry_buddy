@@ -10,7 +10,7 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
     e.preventDefault();
 
     try{
-      const response = await axios.patch(`http://localhost:3000/worker/update-order-status/${order?.OrderId}`)
+      const response = await axios.patch(`https://laundry-buddy-yysq.onrender.com/worker/update-order-status/${order?.OrderId}`)
       console.log("Order completed:", response.data);
       fetchOrders();
     }catch(error){
