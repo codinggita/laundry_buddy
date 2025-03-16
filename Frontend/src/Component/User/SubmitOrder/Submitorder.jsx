@@ -18,6 +18,8 @@ import Sidebar from "../Sidebar";
 import LoaderM from "../../../assets/loader/loader";
 import { useNavigate } from "react-router-dom";
 
+import { io } from 'socket.io-client';
+
 
 export default function SubmitOrder() {
   const [step, setStep] = useState(1);
@@ -25,6 +27,8 @@ export default function SubmitOrder() {
   const [screenshot, setScreenshot] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const [socket, setSocket] = useState(null);
 
 
 
@@ -100,6 +104,10 @@ export default function SubmitOrder() {
       });
       console.log("Order Submitted:", response.data)
 
+      if (socket) {
+        socket.emit('student-message', token); // Use `socket` from state here
+      }
+
     } catch (error) {
       setError("Error fetching user details", error.response?.data?.message || error.message)
     }
@@ -108,6 +116,8 @@ export default function SubmitOrder() {
     }
 
   naviagte("/user/submit-order/success");
+      naviagte("/user/submit-order/success");
+  
 
   };
 
@@ -129,6 +139,26 @@ export default function SubmitOrder() {
     setWeightError(null);
     setStep(step + 1);
   }
+
+
+
+  // Handling socket.io connection 
+  useEffect(() => {
+    const socketConnection = io('https://laundry-buddy-yysq.onrender.com'); // Create the socket inside useEffect
+    setSocket(socketConnection);
+
+    socketConnection.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socketConnection.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+
+    return () => {
+      socketConnection.disconnect();
+    };
+  }, []);
 
 
   return (

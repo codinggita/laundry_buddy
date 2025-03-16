@@ -10,6 +10,7 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
     e.preventDefault();
 
     try{
+<<<<<<< HEAD
       const response = await axios.patch(`https://laundry-buddy-yysq.onrender.com/worker/update-order-status/${order?.OrderId}`,
         {
           phoneNumber: `+91${order?.phoneNumber}`,
@@ -21,6 +22,8 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
           },
         }
       )
+      const response = await axios.patch(`https://laundry-buddy-yysq.onrender.com/worker/update-order-status/${order?.OrderId}`)
+>>>>>>> 284cd9bcd6cc97515c060d1d7e129798327e3d50
       console.log("Order completed:", response.data);
       fetchOrders();
     }catch(error){
@@ -84,4 +87,4 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
   );
 }
 
-export default NotifyAndComplete;
+export default NotifyAndComplete;export default NotifyAndComplete;
