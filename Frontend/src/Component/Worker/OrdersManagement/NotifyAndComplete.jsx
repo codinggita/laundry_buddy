@@ -88,5 +88,4 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
   );
 }
 
-export default NotifyAndComplete;export default NotifyAndComplete;
 export default NotifyAndComplete;
