@@ -23,7 +23,9 @@ const server = http.createServer(app);
 // Setting up Socket.IO with the HTTP server
 const io = new Server(server, {
     cors: {
-      origin: 'http://localhost:5173',  // Allow requests from your frontend
+      origin: (origin, callback) => {
+        callback(null, true);
+      },
       methods: ['GET', 'POST'],
     },
   });
