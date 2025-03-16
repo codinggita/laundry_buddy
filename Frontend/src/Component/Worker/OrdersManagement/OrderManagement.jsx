@@ -18,11 +18,12 @@ function OrderManagement() {
     try {
       const response = await axios.get('https://laundry-buddy-yysq.onrender.com/worker/getallorderdetails');
       const { orders, pendingOrders, completedOrders } = response.data;
+      console.log("Response",response.data.orders)
       setOrders(orders || []);
       setPendingOrders(orders.filter(order => order.status === "Pending") || []);
       setCompletedOrders(orders.filter(order => order.status === "Completed") || []);
       setLoading(false);
-      // console.log("Orders",response)
+      console.log("Orders",response)
     } catch (error) {
       console.error('Failed to fetch orders:', error);
       setLoading(false);
