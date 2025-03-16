@@ -68,7 +68,6 @@ function OrderManagement() {
 
   // Filter orders according to bag number
   const filterOrders = orders.filter(order =>
-    order.bagNumber.toLowerCase().includes(searchQuery.toLowerCase())
     order?.bagNumber?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

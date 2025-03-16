@@ -12,7 +12,6 @@ const cors = require('cors'); // Importing cors
 const { Server } = require("socket.io");
 
 const app = express();
-const port = 3000;
 const port = 8080;
 app.use(express.json());
 app.use(cors());
@@ -59,9 +58,6 @@ app.use('/user',orderRoutes,userRoutes,complaintRoutes,getUserProfileRoute)
 app.use('/admin',WorkerAccountControlle )
 app.use('/worker',WorkerAccountControlle,getWorkerOrders )
 
-
-app.listen(port, () => {
-  console.log(`Server start on http://localhost:${port}`);
 // Start the server
 server.listen(8080, () => {
   console.log('Server started on http://localhost:8080');

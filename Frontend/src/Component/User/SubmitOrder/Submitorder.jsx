@@ -115,7 +115,6 @@ export default function SubmitOrder() {
       setLoading(false);
     }
 
-  naviagte("/user/submit-order/success");
       naviagte("/user/submit-order/success");
   
 
