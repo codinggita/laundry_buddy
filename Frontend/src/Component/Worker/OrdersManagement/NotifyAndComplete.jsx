@@ -1,38 +1,53 @@
 // NotifyAndComplete.jsx
-import React from "react";
+import React, { useState } from "react";
 import { CheckCircle } from "lucide-react";
 import axios from 'axios'
 
-function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
+function NotifyAndComplete({ isOpen, onClose, order, fetchOrders }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
   if (!isOpen) return null; // Only render if isOpen is true
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
 
-    try{
-<<<<<<< HEAD
+    try {
+
+      const phoneNumber = `+91${order?.phoneNumber}`;
+      const message = `Order #${order?.bagNumber || "N/A"} has been completed and ready for pickup.`;
+
+    
+
       const response = await axios.patch(`https://laundry-buddy-yysq.onrender.com/worker/update-order-status/${order?.OrderId}`,
-        {
-          phoneNumber: `+91${order?.phoneNumber}`,
-          message:`Order #${order?.bagNumber || "N/A"} has been completed and ready for pickup.`
-
-         },{
+        {phoneNumber,message},
+         {
           headers: {
             'Content-Type': 'application/json', // Set the Content-Type header
           },
         }
-      )
-=======
-      const response = await axios.patch(`https://laundry-buddy-yysq.onrender.com/worker/update-order-status/${order?.OrderId}`)
->>>>>>> 284cd9bcd6cc97515c060d1d7e129798327e3d50
-      console.log("Order completed:", response.data);
-      fetchOrders();
-    }catch(error){
-     
-        console.error("Error updating order status:", error.response ? error.response.data : error.message);
+      );
+      
+      
+      
+      // Ensure fetchOrders is called after successful update
+      await fetchOrders();
+      
+      // Close modal after successful submission and data refresh
+      onClose();
+      
+    } catch (error) {
+      console.error("Error updating order status:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+      setError(error.response?.data?.message || "Failed to update order status. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    onClose(); // Close after submission
   };
 
   return (
@@ -46,6 +61,12 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
           <h2 className="text-lg font-semibold">Complete Order</h2>
         </div>
         <p className="text-gray-600 mb-4">Mark as complete and notify customer</p>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-md">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -63,6 +84,7 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
               defaultValue={order?.bagNumber || ""}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter bag number"
+              disabled
             />
           </div>
 
@@ -78,9 +100,22 @@ function NotifyAndComplete({ isOpen, onClose, order,fetchOrders  }) {
 
           <button
             type="submit"
-            className="w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 flex items-center justify-center"
+            disabled={isSubmitting}
+            className={`w-full ${isSubmitting ? 'bg-gray-400' : 'bg-green-500 hover:bg-green-600'} text-white px-4 py-2 rounded-md flex items-center justify-center`}
           >
-            <CheckCircle className="h-4 w-4 mr-2" /> Complete & Notify
+            {isSubmitting ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </>
+            ) : (
+              <>
+                <CheckCircle className="h-4 w-4 mr-2" /> Complete & Notify
+              </>
+            )}
           </button>
         </form>
       </div>
