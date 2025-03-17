@@ -26,14 +26,15 @@ const getMostRecentOrderByStatus  = (orders,status) => {
 
   // Filter orders by date and time in descending order and get the first order
   const filteredOrders  = orders
-  .filter(order => order.status === status)
+  .filter(order => status ? order.status === status : true) // If status is provided, filter by it, otherwise get any order
   .sort((a, b) => {
     const dateA = new Date(`${a.date} ${a.time}`);
     const dateB = new Date(`${b.date} ${b.time}`);
     return dateB - dateA;
   });
 
-  return filteredOrders.length > 0 ? filteredOrders[0] : null;};
+  return filteredOrders.length > 0 ? filteredOrders[0] : null;
+};
 
 function WorkerDashbaord() {
 
@@ -44,58 +45,79 @@ function WorkerDashbaord() {
   const[complitionRate,setComplitionRate]=useState(0);
   const[mostRecentNewOrder,setMostRecentNewOrder]=useState(null);
   const [mostRecentCompletedOrder, setMostRecentCompletedOrder] = useState(null);
-  const[loading,setLoading]=useState(false)
-  const[time,setTime]=useState("");
+  const[loading,setLoading]=useState(false);
+  const[timeAgo,setTimeAgo]=useState({
+    newOrder: "",
+    completedOrder: ""
+  });
 
  
-
-
-    const fetchDetails = async ()  =>{
+  const fetchDetails = async () => {
     setLoading(true);
     try{
-
-      const response = await axios.get("https://laundry-buddy-yysq.onrender.com/worker/getallorderdetails")
-      setOrders(response.data.orders || [])
+      const response = await axios.get("https://laundry-buddy-yysq.onrender.com/worker/getallorderdetails");
+      
+      // Set all orders data
+      setOrders(response.data.orders || []);
       setCompleteOrders(response.data.completedOrders);
       setPendingOrders(response.data.pendingOrders);
       setTotalOrders(response.data.totalOrders);
 
-      const recentNewOrder = getMostRecentOrderByStatus(response.data.orders)
+      // Get the most recent orders
+      const recentNewOrder = getMostRecentOrderByStatus(response.data.orders);
       const recentCompletedOrder = getMostRecentOrderByStatus(response.data.orders, 'Completed');
-      setMostRecentNewOrder(recentNewOrder.bagNumber)
-      setMostRecentCompletedOrder(recentCompletedOrder.bagNumber)
-      setTime(recentNewOrder)
-      console.log("new order",recentNewOrder)
-    }catch(error){
+      
+      // Store the entire order objects
+      setMostRecentNewOrder(recentNewOrder);
+      setMostRecentCompletedOrder(recentCompletedOrder);
+      
+      // Calculate time ago for both orders
+      if (recentNewOrder) {
+        const orderDate = new Date(`${recentNewOrder.date} ${recentNewOrder.time}`);
+        setTimeAgo(prev => ({
+          ...prev,
+          newOrder: formatDistanceToNow(orderDate, { addSuffix: true })
+        }));
+      }
+      
+      if (recentCompletedOrder) {
+        const completedDate = new Date(`${recentCompletedOrder.date} ${recentCompletedOrder.time}`);
+        setTimeAgo(prev => ({
+          ...prev,
+          completedOrder: formatDistanceToNow(completedDate, { addSuffix: true })
+        }));
+      }
+      
+    } catch(error) {
       console.error(error.response?.data?.message || error.message);
-
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
-  }
+  };
   
   useEffect(() => {
     fetchDetails();
-}, []);
+  }, []);
 
-useEffect(()=>{
-  if(totalOrders>0){
-    setComplitionRate((completeOrders/totalOrders)*100)
-  }
-},[totalOrders,completeOrders])
+  useEffect(() => {
+    if(totalOrders > 0) {
+      setComplitionRate((completeOrders/totalOrders) * 100);
+    }
+  }, [totalOrders, completeOrders]);
 
 
- if (loading) {
-    return  <div className="fixed inset-0 flex items-center justify-center bg-gray-100 ">     
-                        <LoaderM />
-               </div>;
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100">     
+        <LoaderM />
+      </div>
+    );
   }
 
 
   return (
     <>
-      <div >
-
+      <div>
         <Navbar />
       </div>
       <div className="min-h-screen bg-gray-50 pt-12">
@@ -203,26 +225,34 @@ useEffect(()=>{
             </div>
 
             <div className="space-y-4">
-              {/* Activity Item 1 */}
-              <div className="border-b border-gray-100 pb-4">
-                <h3 className="font-medium">Order Completed</h3>
-                <p className="text-gray-600">Order #ORD-{mostRecentCompletedOrder} was marked as completed</p>
-                <p className="text-gray-400 text-sm mt-1">5 minutes ago</p>
-              </div>
+              {/* Completed Order Activity */}
+              {mostRecentCompletedOrder && (
+                <div className="border-b border-gray-100 pb-4">
+                  <h3 className="font-medium">Order Completed</h3>
+                  <p className="text-gray-600">
+                    Order #Bag-{mostRecentCompletedOrder.bagNumber} was marked as completed
+                  </p>
+                  <p className="text-gray-400 text-sm mt-1">{timeAgo.completedOrder || "Recently"}</p>
+                </div>
+              )}
 
-              {/* Activity Item 2 */}
-              {/* <div className="border-b border-gray-100 pb-4">
-                <h3 className="font-medium">Stock Updated</h3>
-                <p className="text-gray-600">Premium Detergent stock reduced by 50kg</p>
-                <p className="text-gray-400 text-sm mt-1">15 minutes ago</p>
-              </div> */}
+              {/* New Order Activity */}
+              {mostRecentNewOrder && (
+                <div>
+                  <h3 className="font-medium">New Order</h3>
+                  <p className="text-gray-600">
+                    Order #Bag-{mostRecentNewOrder.bagNumber} was created
+                  </p>
+                  <p className="text-gray-400 text-sm mt-1">{timeAgo.newOrder || "Recently"}</p>
+                </div>
+              )}
 
-              {/* Activity Item 3 */}
-              <div>
-                <h3 className="font-medium">New Order</h3>
-                <p className="text-gray-600">Order #ORD-{mostRecentNewOrder || "#"} was created</p>
-                <p className="text-gray-400 text-sm mt-1">{time}</p>
-              </div>
+              {/* Show message if no activities */}
+              {!mostRecentNewOrder && !mostRecentCompletedOrder && (
+                <div>
+                  <p className="text-gray-500">No recent activities to display.</p>
+                </div>
+              )}
             </div>
           </div>
         </main>

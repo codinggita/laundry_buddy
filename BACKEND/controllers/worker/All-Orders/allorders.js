@@ -65,6 +65,8 @@ const getWorkerOrders = async (req, res) => {
    const updateOrderStatus = async (req, res) => {
     const { orderId } = req.params;
     const { phoneNumber, message } = req.body;
+
+
   
     try {
       const order = await Order.findById(orderId);
@@ -85,9 +87,13 @@ const getWorkerOrders = async (req, res) => {
   
       res.status(200).json({ message: 'Order status updated to Completed and Notification Send', order });
     } catch (error) {
-      
-        console.error('Error updating order status and sending notification:', error); // Log the error details
-      res.status(500).json({ message: 'An error occurred while updating the order status', error });
+      console.error('Error updating order status and sending notification:', error);
+  
+      // Provide more specific error details in the response
+      res.status(500).json({
+        message: 'An error occurred while updating the order status or sending SMS',
+        error: error.message || 'Unknown error',
+      });
     }
   };
   
