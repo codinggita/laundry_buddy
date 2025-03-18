@@ -4,6 +4,9 @@ import LoaderM from '../../../assets/loader/loader';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns'
 // import { OrderContext } from '../../User/SubmitOrder/OrderContext';
+import NewOrder from './NewOrder';
+
+
 import {
   ClipboardList,
   CheckCircle,
@@ -50,6 +53,10 @@ function WorkerDashbaord() {
     newOrder: "",
     completedOrder: ""
   });
+
+
+  // Navigation Buttons
+  const [isNewOrderOpen, setNewOrderOpen] = useState(false);
 
  
   const fetchDetails = async () => {
@@ -140,7 +147,12 @@ function WorkerDashbaord() {
               <h1 className="text-2xl font-bold text-gray-800">Good Afternoon</h1>
               <p className="text-gray-600 flex items-center mt-1">
                 <ClipboardList className="h-4 w-4 mr-2" />
-                Tuesday, January 7, 2025
+                {new Date().toLocaleDateString("en-US", {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
               </p>
             </div>
             {/* <div className="text-right flex-1 sm:flex sm:flex-col sm:items-end">
@@ -193,7 +205,12 @@ function WorkerDashbaord() {
 
           {/* Action Buttons */}
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg flex flex-col items-center justify-center">
+            <button
+            onClick={()=>{
+              setNewOrderOpen(true);
+            }} 
+            
+             className="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg flex flex-col items-center justify-center">
               <Plus className="h-6 w-6 mb-2" />
               <span>New Order</span>
             </button>
@@ -210,6 +227,11 @@ function WorkerDashbaord() {
               <span>Settings</span>
             </button>
           </div>
+
+          <NewOrder
+          isOpen={isNewOrderOpen}
+          onClose={()=> setNewOrderOpen(false)}
+          />
 
           {/* Recent Activity */}
           <div className="bg-white rounded-lg shadow-sm p-6">
