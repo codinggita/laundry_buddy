@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns'
 // import { OrderContext } from '../../User/SubmitOrder/OrderContext';
 import NewOrder from './NewOrder';
+import GenerateReport from './GenerateReport';
 
 
 import {
@@ -57,6 +58,7 @@ function WorkerDashbaord() {
 
   // Navigation Buttons
   const [isNewOrderOpen, setNewOrderOpen] = useState(false);
+  const [isGenerateReportOpen, setGenerateReportOpen] = useState(false);
 
  
   const fetchDetails = async () => {
@@ -214,7 +216,11 @@ function WorkerDashbaord() {
               <Plus className="h-6 w-6 mb-2" />
               <span>New Order</span>
             </button>
-            <button className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg flex flex-col items-center justify-center">
+            <button
+             onClick={()=>{
+              setGenerateReportOpen(true);
+            }} 
+             className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg flex flex-col items-center justify-center">
               <FileText className="h-6 w-6 mb-2" />
               <span>Generate Report</span>
             </button>
@@ -231,7 +237,16 @@ function WorkerDashbaord() {
           <NewOrder
           isOpen={isNewOrderOpen}
           onClose={()=> setNewOrderOpen(false)}
+         
           />
+          <GenerateReport
+           isOpen={isGenerateReportOpen}
+           onClose={()=> setGenerateReportOpen(false)}
+           pending={pendingOrders}
+           completed={completeOrders}
+           total={totalOrders}
+           />
+          
 
           {/* Recent Activity */}
           <div className="bg-white rounded-lg shadow-sm p-6">
