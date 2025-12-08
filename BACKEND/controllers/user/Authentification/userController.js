@@ -62,44 +62,64 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log("=== LOGIN ATTEMPT ===");
+  console.log("Email received:", email);
+  console.log("Email type:", typeof email);
+  console.log("Email length:", email ? email.length : 0);
+  console.log("Password received:", password ? "YES" : "NO");
+  console.log("Request body:", JSON.stringify(req.body));
+
   try {
     // Check if user exists
-    const user = await User.findOne({ email }) || await Worker.findOne({ email });
+    const user = await User.findOne({ email });
+    console.log("User found in User collection:", user ? "YES" : "NO");
+    if (user) console.log("User details:", { id: user._id, email: user.email, name: user.name });
+    
+    const worker = await Worker.findOne({ email });
+    console.log("Worker found in Worker collection:", worker ? "YES" : "NO");
+    
+    const finalUser = user || worker;
 
-    if (!user) {
+    if (!finalUser) {
+      console.log("❌ No user found - returning 400");
       return res.status(400).json({ message: "User not found" });
     }
 
+    console.log("✅ User found, checking password...");
+
     // Compare password with the hashed password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, finalUser.password);
+    console.log("Password match:", isMatch ? "YES" : "NO");
+    
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-
     const token = jwt.sign(
       {
-      userId: user._id,
-      role :user.role
+      userId: finalUser._id,
+      role: finalUser.role
     },
     process.env.JWT_SECRET, 
     { expiresIn: '1h' }
     );
 
+    console.log("✅ Login successful, sending response");
+
     // Login successful
     res.status(200).json({
-      success:true,
+      success: true,
       message: "Login successful",
       token,
-      name: user.name,
-      userId: user._id,
-      role: user.role
+      name: finalUser.name,
+      userId: finalUser._id,
+      role: finalUser.role
     });
   } catch (error) {
+    console.log("❌ Error:", error.message);
     res.status(500).json({ message: 'Login failed', error: error.message });
   }
 };
-
 
 
 // function for forgotpassword link
