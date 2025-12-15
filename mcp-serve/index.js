@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"; // this is for local testing with stdio
+// import { HttpServerTransport } from "@modelcontextprotocol/sdk/server/http.js";  // for mcp server to remote hosting
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import axios from "axios";
-
-const BASE_URL = "http://localhost:3000";
+// import express from "express";
+const BASE_URL = "https://laundry-buddy-yysq.onrender.com";
+const PORT = 5000;
 
 class LaundryBuddyMCPServer {
   constructor() {
@@ -223,8 +225,26 @@ class LaundryBuddyMCPServer {
     await this.server.connect(transport);
     console.error("Laundry Buddy MCP server running on stdio");
   }
-}
+
+//     async run() {
+//     const app = express();
+//     const transport = new HttpServerTransport({ app }); // Initialize HTTP transport with Express app
+
+//     // The connect method now binds the MCP handlers to the Express routes
+//     await this.server.connect(transport); 
+
+//     // Start the HTTP server
+//     app.listen(PORT, () => {
+//       console.error(`Laundry Buddy MCP server running on http://localhost:${PORT}`);
+//       console.error(`WebSocket endpoint: ws://localhost:${PORT}/v1/mcp`);
+//     });
+//   }
+} 
 
 const server = new LaundryBuddyMCPServer();
 server.run().catch(console.error);
+
+
+
+
 
