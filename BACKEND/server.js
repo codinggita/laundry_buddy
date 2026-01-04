@@ -8,6 +8,7 @@ const complaintRoutes = require('./routes/userRoutes/complaintRoutes/complaintRo
 const WorkerAccountControlle =require('./routes/Admin/WorkerControlle/workeraccount')
 const getUserProfileRoute = require('./routes/userRoutes/Profile/userDetails')
 const getWorkerOrders = require("./routes/Worker/Get-All-Orders/allOrders")
+const stockRoutes = require('./routes/Worker/stockRoutes');
 const cors = require('cors'); // Importing cors
 const { Server } = require("socket.io");
 
@@ -56,7 +57,8 @@ connectDB();
 
 app.use('/user',orderRoutes,userRoutes,complaintRoutes,getUserProfileRoute)
 app.use('/admin',WorkerAccountControlle )
-app.use('/worker',WorkerAccountControlle,getWorkerOrders )
+app.use('/worker',WorkerAccountControlle,getWorkerOrders)
+app.use('/stock', stockRoutes)
 
 // Start the server
 server.listen(port, () => {
