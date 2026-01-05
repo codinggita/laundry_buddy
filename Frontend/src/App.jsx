@@ -15,6 +15,8 @@ import Dailyrush from './Component/User/Daily-Rush/Dailyrush.jsx';
 import Complaint from './Component/User/Complaint-Form/ComplaintForm.jsx';
 import ComplaintFormSuccess from './Component/User/Complaint-Form/ComplaintFormSuccess.jsx';
 import OrderManagement from './Component/Worker/OrdersManagement/OrderManagement.jsx';
+import Stock from './Component/Worker/Stock/Stock.jsx';
+
 
 function App() {
 
@@ -40,7 +42,8 @@ function App() {
 
     {/* worker starts  */}
     <Route path="/workerdashboard" element={ <WorkerDashbaord /> } />  
-    <Route path="/worker/orders" element={ <OrderManagement /> } />  
+    <Route path="/worker/orders" element={ <OrderManagement /> } />
+    <Route path="/stock" element={ <Stock /> } />  
     </Routes>
     </BrowserRouter>
     </>
